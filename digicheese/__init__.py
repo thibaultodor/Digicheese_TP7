@@ -15,7 +15,8 @@ def create_app():
     
     # Initialize extensions with app
     db.init_app(app)
-    
+
+
     # Configure Flask-Login
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
@@ -34,4 +35,7 @@ def create_app():
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
     
+    with app.app_context():
+        db.create_all()
+        
     return app
