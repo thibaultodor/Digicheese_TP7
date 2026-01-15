@@ -14,7 +14,6 @@ class Objet(db.Model):
     taille = db.Column(db.String(50), nullable=True)
     # Item weight
     poids = db.Column(db.Numeric(10, 3), nullable=True)
-
     # True if item is unavailable
     bl_indispo = db.Column(db.Boolean, default=False)
 
