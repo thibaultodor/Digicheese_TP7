@@ -10,7 +10,7 @@ def create_app():
     
     # Configuration
     app.config['SECRET_KEY'] = 'your-secret-key-change-in-production'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
+    app.config['SQLALCHEMY_DATABASE_URI'] ='mysql+pymysql://root@localhost:3306/digicheese?charset=utf8mb4' 
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     
     # Initialize extensions with app
@@ -37,5 +37,5 @@ def create_app():
     
     with app.app_context():
         db.create_all()
-        
+
     return app
