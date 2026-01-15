@@ -22,4 +22,3 @@ def profile_admin():
     # if current_user.has_role('admin'):
     #     return render_template('admin_profile.html', name=current_user.name)
     return render_template('profile.html', name=current_user.name)
-
