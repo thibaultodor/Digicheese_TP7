@@ -1,9 +1,12 @@
+from enum import Enum
 from flask_login import UserMixin
 from . import db
 
-# @login_manager.user_loader
-# def load_user(user_id):
-#     return User.query.get(int(user_id))
+
+class MyEnum(Enum):
+    ADMIN = "admin"
+    COLIS = "colis"
+    STOCK = "stock"
 
 
 def get_user(user_id):
@@ -16,3 +19,8 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(1000))
     name = db.Column(db.String(100))
+    role = db.Column(db.Enum(MyEnum), default=MyEnum.COLIS)
+
+    def has_role(self, role):
+        return self.role == role
+
