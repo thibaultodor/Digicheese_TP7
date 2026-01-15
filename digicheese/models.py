@@ -3,7 +3,7 @@ from flask_login import UserMixin
 from . import db
 
 
-class MyEnum(Enum):
+class Role(Enum):
     ADMIN = "admin"
     COLIS = "colis"
     STOCK = "stock"
@@ -19,8 +19,16 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(1000))
     name = db.Column(db.String(100))
-    role = db.Column(db.Enum(MyEnum), default=MyEnum.COLIS)
+    role = db.Column(db.Enum(Role), default=Role.COLIS)
 
     def has_role(self, role):
         return self.role == role
+    
+    def to_json(self):
+        return {
+            'id': self.id,
+            'email': self.email,
+            'name': self.name,
+            'role': self.role.value
+        }
 
