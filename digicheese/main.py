@@ -7,6 +7,13 @@ main = Blueprint('main', __name__)
 
 @main.route('/')
 def index():
+    """
+    Page d'accueil
+    ---
+    responses:
+      200:
+        description: Page HTML d'accueil
+    """
     return render_template('index.html')
 
 @main.route('/profile')
@@ -19,6 +26,4 @@ def profile_admin():
     d = [a.to_json() for a in User.query.all()]
     return jsonify(d)
 
-    # if current_user.has_role('admin'):
-    #     return render_template('admin_profile.html', name=current_user.name)
-    return render_template('profile.html', name=current_user.name)
+

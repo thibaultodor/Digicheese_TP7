@@ -1,13 +1,13 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flasgger import Swagger
 
 # Initialize SQLAlchemy instance (outside create_app for import access)
 db = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__)
-    
     # Configuration
     app.config['SECRET_KEY'] = 'your-secret-key-change-in-production'
     app.config['SQLALCHEMY_DATABASE_URI'] ='mysql+pymysql://root@localhost:3306/digicheese?charset=utf8mb4' 
@@ -15,6 +15,7 @@ def create_app():
     
     # Initialize extensions with app
     db.init_app(app)
+
 
 
     # Configure Flask-Login
@@ -34,7 +35,16 @@ def create_app():
     
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
-    
+
+    from .router.adminRouter import admin as admin_blueprint
+    app.register_blueprint(admin_blueprint)
+
+
+    from .router.operatorRouter import operator as operator_blueprint
+    app.register_blueprint(operator_blueprint)
+
+    Swagger(app)
+
     with app.app_context():
         db.create_all()
 
