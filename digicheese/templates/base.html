@@ -11,7 +11,6 @@
 
 <body>
     <section class="hero is-primary is-fullheight">
-
         <div class="hero-head">
             <nav class="navbar">
                 <div class="container">
@@ -20,18 +19,13 @@
                             <a href="{{ url_for('main.index') }}" class="navbar-item">
                                 Home
                             </a>
-                            <a href="{{ url_for('main.profile') }}" class="navbar-item">
-                                Profile
-                            </a>
-                            <a href="{{ url_for('auth.login') }}" class="navbar-item">
-                                Login
-                            </a>
-                            <a href="{{ url_for('auth.signup') }}" class="navbar-item">
-                                Sign Up
-                            </a>
-                            <a href="{{ url_for('auth.logout') }}" class="navbar-item">
-                                Logout
-                            </a>
+                            {% if current_user.is_authenticated %}
+                              <a href="{{ url_for('main.profile') }}" class="navbar-item">Profile</a>
+                              <a href="{{ url_for('auth.logout') }}" class="navbar-item">Logout</a>
+                            {% else %}
+                              <a href="{{ url_for('auth.login') }}" class="navbar-item">Login</a>
+                              <a href="{{ url_for('auth.signup') }}" class="navbar-item">Sign Up</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -40,6 +34,17 @@
 
         <div class="hero-body">
             <div class="container has-text-centered">
+                {% with messages = get_flashed_messages() %}
+                  {% if messages %}
+                    <div class="container" style="max-width: 520px; margin: 0 auto 1rem auto;">
+                      {% for message in messages %}
+                        <div class="notification is-danger">
+                          {{ message }}
+                        </div>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                {% endwith %}
                {% block content %}
                {% endblock %}
             </div>
