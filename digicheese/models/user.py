@@ -2,12 +2,6 @@ from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from .. import db
 
-
-def get_user(user_id: int):
-    """Simple helper used by Flask-Login (load user from DB)."""
-    return User.query.filter_by(id=user_id).first()
-
-
 class Role(db.Model):
     """User role (admin / colis / stock)."""
     __tablename__ = "role"
@@ -46,11 +40,11 @@ class User(db.Model, UserMixin):
     # User id
     id = db.Column(db.Integer, primary_key=True)
     # Display name
-    nom = db.Column(db.String(100), nullable=False)
+    name = db.Column(db.String(100), nullable=False)
     # Unique email used to login
     email = db.Column(db.String(100), unique=True, nullable=False)
     # Hashed password
-    password_hash = db.Column(db.String(255), nullable=False)
+    password = db.Column(db.String(255), nullable=False)
 
     # Relations
     role_links = db.relationship("UserRole",back_populates="user",cascade="all, delete-orphan",lazy="joined",)
@@ -58,11 +52,11 @@ class User(db.Model, UserMixin):
     # Methods
     def set_password(self, raw_password: str) -> None:
         """Hash and store the password."""
-        self.password_hash = generate_password_hash(raw_password, method="sha256")
+        self.password = generate_password_hash(raw_password, method="sha256")
 
     def check_password(self, raw_password: str) -> bool:
         """Check the password against the stored hash."""
-        return check_password_hash(self.password_hash, raw_password)
+        return check_password_hash(self.password, raw_password)
 
     def has_role(self, role_label: str) -> bool:
         """Return True if the user has the given role label."""

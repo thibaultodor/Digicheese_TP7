@@ -1,5 +1,5 @@
 # Expose all models at package level for easy imports
-from .user import User, Role, UserRole, get_user
+from .user import User, Role, UserRole
 from .geography import Commune, Adresse, Client
 from .orders import Conditionnement, Commande, DetailCommande
 from .catalogue import Objet, Prix, MiseAJour, RelCond
@@ -9,7 +9,6 @@ __all__ = [
     "User",
     "Role",
     "UserRole",
-    "get_user",
     "Commune",
     "Adresse",
     "Client",
