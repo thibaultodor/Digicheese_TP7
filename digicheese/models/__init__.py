@@ -6,7 +6,7 @@ from .commune import Commune
 from .conditionnement import Conditionnement
 from .detail_commande import DetailCommande
 from .mise_a_jour_stock import MiseAJour
-from .objet_goodies import ObjetGoodies
+from .objet_goodies import Objet
 from .prix_objet import Prix
 from .regles_conditionnement import RelCond
 from .role import Role

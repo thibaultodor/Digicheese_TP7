@@ -10,7 +10,7 @@ class Role(db.Model):
     libelle = db.Column(db.String(50), unique=True, nullable=False)
 
     # Relations
-    user_links = db.relationship("UserRole", back_populates="role", cascade="all, delete-orphan")
+    user_links = db.relationship("RolesUtilisateur", back_populates="role", cascade="all, delete-orphan")
 
     # Methods
     def to_json(self):

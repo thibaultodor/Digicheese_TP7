@@ -16,7 +16,7 @@ class Utilisateur(db.Model, UserMixin):
     password = db.Column(db.String(255), nullable=False)
 
     # Relations
-    role_links = db.relationship("UserRole",back_populates="user",cascade="all, delete-orphan",lazy="joined",)
+    role_links = db.relationship("RolesUtilisateur",back_populates="user",cascade="all, delete-orphan",lazy="joined",)
 
     # Methods
     def set_password(self, raw_password: str) -> None:

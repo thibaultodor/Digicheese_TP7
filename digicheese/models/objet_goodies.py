@@ -1,6 +1,6 @@
 from .. import db
 
-class ObjetGoodies(db.Model):
+class Objet(db.Model):
     """Gift item / goodie (objet)."""
     __tablename__ = "objet"
 
