@@ -10,7 +10,7 @@ from .objet_goodies import Objet
 from .prix_objet import Prix
 from .regles_conditionnement import RelCond
 from .role import Role
-from .roles_utiliseur import RolesUtilisateur
+from .roles_utilisateur import RolesUtilisateur
 from .stock_ligne import StockLigne
 from .stock import Stock
 from .utilisateur import Utilisateur

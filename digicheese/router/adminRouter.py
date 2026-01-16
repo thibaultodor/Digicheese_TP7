@@ -1,16 +1,13 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required
-from sqlalchemy import true
-from sqlalchemy.testing.pickleable import User
-
-from digicheese.models import Utilisateur
-from digicheese.repositories.user_repository import UserRepository
+from digicheese.repositories.r_utilisateur import UtilisateurRepository
 from digicheese.decorator.role_required import role_required
 from digicheese import db
+from werkzeug.security import generate_password_hash
 
 
 admin = Blueprint('admin', __name__, url_prefix='/admin')
-repo = UserRepository(db.session)
+repo = UtilisateurRepository(db.session)
 
 
 @admin.route('/users', methods=['GET'])
@@ -26,7 +23,6 @@ def list_users():
       200:
         description: Liste des utilisateurs
     """
-    # repo = UserRepository(db.session)
     users = repo.get_all()
 
     return jsonify([
@@ -74,26 +70,55 @@ def get_user(user_id):
         ])
     return jsonify({"error": "Utilisateur non trouvé"}), 404
 
-#TODO pb avec la création de l'utilisateur a renseigne pour la fonction add
 @admin.route('/addUser', methods=['POST'])
 @login_required
 def add_user():
     """
-    Ajoute un utilisateurs
+    Ajoute un utilisateur
     ---
     tags:
       - Admin / Users
+    parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          type: object
+          required:
+            - email
+            - name
+            - password
+          properties:
+            email:
+              type: string
+              example: test@mail.com
+            name:
+              type: string
+              example: Julien
+            password:
+              type: string
+              example: secret123
     responses:
-      200:
-        description: Ajoute un utilisateurs
+      201:
+        description: Utilisateur créé
+      400:
+        description: Données invalides
     """
     data = request.get_json()
     email = data.get('email')
     name = data.get('name')
     password = data.get('password')
-    user = Utilisateur()
-    user.set_password(password)
-    return true
+    password = generate_password_hash(password)
+    if not email or not name or not password:
+        return jsonify({"error": "Champs manquants"}), 400
+
+    user = repo.add(email=email, name=name, password=password)
+    return jsonify({
+        "message": "Utilisateur créé",
+        "id": user.id
+    }), 201
+
+
 
 
 
@@ -122,7 +147,7 @@ def delete_user(user_id):
       404:
         description: Utilisateur non trouvé
     """
-    return true
+    return True
 
 #TODO
 @admin.route('/updateUser/<int:user_id>', methods=['PUT'])
@@ -149,7 +174,7 @@ def update_user(user_id):
       404:
         description: Utilisateur non trouvé
     """
-    return true
+    return True
 
 
 
@@ -169,7 +194,7 @@ def list_objets():
     """
     # repo = UserRepository(db.session)
     # users = repo.get_all()
-    return true
+    return True
     # return jsonify([
     #     {
     #         "id": u.id,
@@ -194,7 +219,7 @@ def objet():
     """
     # repo = UserRepository(db.session)
     # users = repo.get_all()
-    return true
+    return True
     # return jsonify([
     #     {
     #         "id": u.id,
@@ -217,7 +242,7 @@ def add_objet():
       200:
         description: ajoute un goodie
     """
-    return true
+    return True
 
 #TODO
 @admin.route('/updateObjet', methods=['PUT'])
@@ -233,8 +258,7 @@ def update_objet():
       200:
         description: Met a jour un goodie par ID
     """
-
-    return true
+    return True
 
 #TODO
 @admin.route('/deleteObjet', methods=['DELETE'])
@@ -250,5 +274,5 @@ def delete_objet():
       200:
         description: Supprime un goodie par ID
     """
-    return true
+    return True
 
