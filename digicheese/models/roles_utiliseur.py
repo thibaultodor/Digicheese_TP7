@@ -10,5 +10,5 @@ class RolesUtilisateur(db.Model):
     role_id = db.Column(db.Integer, db.ForeignKey("role.id"), primary_key=True)
 
     # Relations
-    user = db.relationship("User", back_populates="role_links")
+    user = db.relationship("Utilisateur", back_populates="role_links")
     role = db.relationship("Role", back_populates="user_links")
