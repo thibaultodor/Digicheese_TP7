@@ -8,10 +8,24 @@ auth = Blueprint('auth', __name__)
 
 @auth.route('/login')
 def login():
+    """
+    page login
+    ---
+    responses:
+      200:
+        description: page login
+    """
     return render_template('login.html')
 
 @auth.route('/login', methods=['POST'])
 def login_post():
+    """
+    login d'un compte
+    ---
+    responses:
+      200:
+        description: login d'un compte
+    """
     email = request.form.get('email')
     password = request.form.get('password')
     remember = True if request.form.get('remember') else False
@@ -27,10 +41,24 @@ def login_post():
 
 @auth.route('/signup')
 def signup():
+    """
+    page création de compte
+    ---
+    responses:
+      200:
+        description: page création de compte
+    """
     return render_template('signup.html')
 
 @auth.route('/signup', methods=['POST'])
 def signup_post():
+    """
+    création d'un compte utilisateur
+    ---
+    responses:
+      200:
+        description: création d'un compte utilisateur
+    """
     email = request.form.get('email')
     name = request.form.get('name')
     password = request.form.get('password')
@@ -50,5 +78,12 @@ def signup_post():
 @auth.route('/logout')
 @login_required
 def logout():
+    """
+    deconnexion
+    ---
+    responses:
+      200:
+        description: deconnexion
+    """
     logout_user()
     return redirect(url_for('main.index'))
