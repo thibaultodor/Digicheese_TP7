@@ -11,6 +11,8 @@ def login():
     """
     page login
     ---
+    tags:
+      - Authentification
     responses:
       200:
         description: page login
@@ -22,6 +24,8 @@ def login_post():
     """
     login d'un compte
     ---
+    tags:
+      - Authentification
     responses:
       200:
         description: login d'un compte
@@ -44,6 +48,8 @@ def signup():
     """
     page création de compte
     ---
+    tags:
+      - Authentification
     responses:
       200:
         description: page création de compte
@@ -55,6 +61,8 @@ def signup_post():
     """
     création d'un compte utilisateur
     ---
+    tags:
+      - Authentification
     responses:
       200:
         description: création d'un compte utilisateur
@@ -81,6 +89,8 @@ def logout():
     """
     deconnexion
     ---
+    tags:
+      - Authentification
     responses:
       200:
         description: deconnexion
