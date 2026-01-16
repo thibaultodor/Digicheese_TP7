@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, render_template
 from flask_login import login_required, current_user
 
-from digicheese.models import User
+from digicheese.models import Utilisateur as User
 
 main = Blueprint('main', __name__)
 
