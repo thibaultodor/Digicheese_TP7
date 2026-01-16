@@ -16,8 +16,6 @@ def create_app():
     # Initialize extensions with app
     db.init_app(app)
 
-
-
     # Configure Flask-Login
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
