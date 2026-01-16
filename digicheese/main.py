@@ -19,6 +19,7 @@ def index():
 @main.route('/profile')
 @login_required
 def profile():
+    # print(current_user.role_links)
     return render_template('profile.html', name=current_user.name)
 
 @main.route('/hello')

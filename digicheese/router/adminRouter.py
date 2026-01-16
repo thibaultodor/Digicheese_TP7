@@ -1,6 +1,8 @@
 from flask import Blueprint, jsonify
 from flask_login import login_required
 
+from digicheese.decorator.role_required import role_required
+
 admin = Blueprint('admin', __name__, url_prefix='/admin')
 
 # Liste de test d'utilisateurs
@@ -12,6 +14,7 @@ fake_users = [
 
 @admin.route('/users')
 @login_required
+@role_required('colis')
 def list_users():
     """
     Liste tous les utilisateurs
