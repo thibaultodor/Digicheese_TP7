@@ -1,4 +1,3 @@
-# Repositories (CRUD helpers)
 from .r_utilisateur import UtilisateurRepository
 from .r_role import RoleRepository
 from .r_roles_utilisateur import RolesUtilisateurRepository
@@ -15,22 +14,3 @@ from .r_detail_commande import DetailCommandeRepository
 from .r_stock import StockRepository
 from .r_stock_ligne import StockLigneRepository
 from .r_boutique import BoutiqueRepository
-
-__all__ = [
-    "UtilisateurRepository",
-    "RoleRepository",
-    "RolesUtilisateurRepository",
-    "ObjetRepository",
-    "PrixRepository",
-    "MiseAJourRepository",
-    "RelCondRepository",
-    "CommuneRepository",
-    "AdresseRepository",
-    "ClientRepository",
-    "ConditionnementRepository",
-    "CommandeRepository",
-    "DetailCommandeRepository",
-    "StockRepository",
-    "StockLigneRepository",
-    "BoutiqueRepository",
-]
