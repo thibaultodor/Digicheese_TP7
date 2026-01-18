@@ -37,12 +37,18 @@ def create_app():
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
-    from .router.adminRouter import admin as admin_blueprint
-    app.register_blueprint(admin_blueprint)
 
+    from .routes.admin.user_route import admin_users as admin_users_blueprint
+    app.register_blueprint(admin_users_blueprint)
 
-    from .router.operatorRouter import operator as operator_blueprint
-    app.register_blueprint(operator_blueprint)
+    from .routes.admin.objet_route import admin_objets as admin_objets_blueprint
+    app.register_blueprint(admin_objets_blueprint)
+
+    from .routes.admin.commune_route import admin_communes as admin_communes_blueprint
+    app.register_blueprint(admin_communes_blueprint)
+
+    # from .routes.operatorRouter import operator as operator_blueprint
+    # app.register_blueprint(operator_blueprint)
 
     Swagger(app)
 
