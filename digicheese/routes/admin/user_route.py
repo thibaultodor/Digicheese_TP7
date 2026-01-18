@@ -6,11 +6,12 @@ from digicheese import db
 from werkzeug.security import generate_password_hash
 
 
-admin = Blueprint('admin', __name__, url_prefix='/admin')
+
+admin_users = Blueprint('admin_users',__name__,url_prefix='/admin/users')
 repo = UtilisateurRepository(db.session)
 
 
-@admin.route('/users', methods=['GET'])
+@admin_users.route('/', methods=['GET'])
 @login_required
 @role_required('admin')
 def list_users():
@@ -34,8 +35,9 @@ def list_users():
     ])
 
 
-@admin.route('/user/<int:user_id>', methods=['GET'])
+@admin_users.route('/<int:user_id>', methods=['GET'])
 @login_required
+@role_required('admin')
 def get_user(user_id):
     """
     Récupère un utilisateur par ID
@@ -70,8 +72,9 @@ def get_user(user_id):
         ])
     return jsonify({"error": "Utilisateur non trouvé"}), 404
 
-@admin.route('/addUser', methods=['POST'])
+@admin_users.route('/add', methods=['POST'])
 @login_required
+@role_required('admin')
 def add_user():
     """
     Ajoute un utilisateur
@@ -119,12 +122,9 @@ def add_user():
     }), 201
 
 
-
-
-
-#TODO
-@admin.route('/deleteUser/<int:user_id>', methods=['DELETE'])
+@admin_users.route('/delete/<int:user_id>', methods=['DELETE'])
 @login_required
+@role_required('admin')
 def delete_user(user_id):
     """
     Supprime un utilisateur par ID
@@ -147,14 +147,18 @@ def delete_user(user_id):
       404:
         description: Utilisateur non trouvé
     """
-    return True
+    repo.delete(user_id)
+    return jsonify({
+        "message": "Utilisateur suprimé",
+        "id": user_id
+    }), 200
 
-#TODO
-@admin.route('/updateUser/<int:user_id>', methods=['PUT'])
+@admin_users.route('/update/<int:user_id>', methods=['PUT'])
 @login_required
+@role_required('admin')
 def update_user(user_id):
     """
-    Met à jour un utilisateur par ID
+    Met un utilisateur à jour
     ---
     tags:
       - Admin / Users
@@ -164,115 +168,45 @@ def update_user(user_id):
         type: integer
         required: true
         description: ID de l'utilisateur à modifier
+      - in: body
+        name: body
+        required: false
+        schema:
+          type: object
+          properties:
+            email:
+              type: string
+              example: test@mail.com
+            name:
+              type: string
+              example: Julien
+            password:
+              type: string
+              example: secret123
     responses:
       200:
-        description: Utilisateur modifié
-        content:
-          application/json:
-            example:
-              message: "Utilisateur 1 modifié"
+        description: Utilisateur mis à jour
+      400:
+        description: Aucune donnée valide fournie
       404:
-        description: Utilisateur non trouvé
+        description: Utilisateur introuvable
     """
-    return True
+    data = request.get_json() or {}
 
+    update_data = {}
+    for field in ("email", "name", "password"):
+        if field in data and data[field] is not None:
+            update_data[field] = data[field]
 
+    if not update_data:
+        return jsonify({"error": "Aucun champ à mettre à jour"}), 400
 
-#TODO
-@admin.route('/objets', methods=['GET'])
-@login_required
-@role_required('admin')
-def list_objets():
-    """
-    Liste tous les goodies
-    ---
-    tags:
-      - Admin / objet
-    responses:
-      200:
-        description: Liste des goodies
-    """
-    # repo = UserRepository(db.session)
-    # users = repo.get_all()
-    return True
-    # return jsonify([
-    #     {
-    #         "id": u.id,
-    #         "email": u.email,
-    #         "name": u.name
-    #         } for u in users
-    # ])
+    user = repo.update(user_id, **update_data)
+    if user is None:
+        return jsonify({"error": "Utilisateur introuvable"}), 404
 
-#TODO
-@admin.route('/objet', methods=['GET'])
-@login_required
-@role_required('admin')
-def objet():
-    """
-    Recherche un goodie par ID
-    ---
-    tags:
-      - Admin / objet
-    responses:
-      200:
-        description: Recherche un goodie par ID
-    """
-    # repo = UserRepository(db.session)
-    # users = repo.get_all()
-    return True
-    # return jsonify([
-    #     {
-    #         "id": u.id,
-    #         "email": u.email,
-    #         "name": u.name
-    #         } for u in users
-    # ])
-
-#TODO
-@admin.route('/addObjet', methods=['POST'])
-@login_required
-@role_required('admin')
-def add_objet():
-    """
-    Ajoute un goodie
-    ---
-    tags:
-      - Admin / objet
-    responses:
-      200:
-        description: ajoute un goodie
-    """
-    return True
-
-#TODO
-@admin.route('/updateObjet', methods=['PUT'])
-@login_required
-@role_required('admin')
-def update_objet():
-    """
-    Met a jour un goodie par ID
-    ---
-    tags:
-      - Admin / objet
-    responses:
-      200:
-        description: Met a jour un goodie par ID
-    """
-    return True
-
-#TODO
-@admin.route('/deleteObjet', methods=['DELETE'])
-@login_required
-@role_required('admin')
-def delete_objet():
-    """
-    Supprime un goodie par ID
-    ---
-    tags:
-      - Admin / objet
-    responses:
-      200:
-        description: Supprime un goodie par ID
-    """
-    return True
+    return jsonify({
+        "message": "Utilisateur mis à jour",
+        "id": user_id
+    }), 200
 
