@@ -34,7 +34,7 @@ class Utilisateur(db.Model, UserMixin):
     def to_json(self):
         return {
             "id": self.id,
-            "nom": self.nom,
+            "name": self.name,
             "email": self.email,
             "roles": [link.role.libelle for link in self.role_links],
         }
