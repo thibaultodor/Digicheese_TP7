@@ -9,7 +9,6 @@ def role_required(role):
         @wraps(f)
         def decorated_function(*args, **kwargs):
             if not current_user.is_authenticated or not current_user.has_role(role):
-                print("-j---------------------------")
                 return jsonify({"error": "Forbidden"}), 403
             return f(*args, **kwargs)
         return decorated_function

@@ -47,13 +47,35 @@ def login_post():
 @auth.route('/api/login', methods=['POST'])
 def login_api_post():
     """
-    login d'un compte via API
+    Login via API
     ---
     tags:
       - Authentification
+    parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          type: object
+          required:
+            - email
+            - name
+            - password
+          properties:
+            email:
+              type: string
+              example: test@mail.com
+            name:
+              type: string
+              example: Julien
+            password:
+              type: string
+              example: secret123
     responses:
       200:
-        description: login d'un compte
+        description: Utilisateur connecté
+      400:
+        description: Données invalides
     """
 
     request_json = request.json
