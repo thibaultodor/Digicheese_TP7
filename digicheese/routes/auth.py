@@ -1,8 +1,8 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, jsonify, render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
-from .models import Utilisateur as User
-from . import db
+from ..models import Utilisateur as User
+from .. import db
 
 auth = Blueprint('auth', __name__)
 
@@ -17,6 +17,7 @@ def login():
       200:
         description: page login
     """
+    print("IN LOGIN ROUTE")
     return render_template('login.html')
 
 @auth.route('/login', methods=['POST'])
@@ -42,6 +43,52 @@ def login_post():
 
     login_user(user, remember=remember)
     return redirect(url_for('main.profile'))
+
+@auth.route('/api/login', methods=['POST'])
+def login_api_post():
+    """
+    Login via API
+    ---
+    tags:
+      - Authentification
+    parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          type: object
+          required:
+            - email
+            - name
+            - password
+          properties:
+            email:
+              type: string
+              example: test@mail.com
+            name:
+              type: string
+              example: Julien
+            password:
+              type: string
+              example: secret123
+    responses:
+      200:
+        description: Utilisateur connecté
+      400:
+        description: Données invalides
+    """
+
+    request_json = request.json
+    email = request_json.get('email')
+    password = request_json.get('password')
+
+    user = User.query.filter_by(email=email).first()
+    print(User.query.all())
+    if not user or not check_password_hash(user.password, password):
+        return jsonify({'error': 'Invalid login details'}), 401
+
+    login_user(user, remember=True)
+    return jsonify(user.to_json()), 200
 
 @auth.route('/signup')
 def signup():

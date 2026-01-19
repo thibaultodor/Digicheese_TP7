@@ -1,6 +1,6 @@
 from functools import wraps
 
-from flask import flash, redirect, url_for
+from flask import jsonify
 from flask_login import current_user
 
 
@@ -9,9 +9,7 @@ def role_required(role):
         @wraps(f)
         def decorated_function(*args, **kwargs):
             if not current_user.is_authenticated or not current_user.has_role(role):
-                flash('Access denied. Insufficient permissions.')
-                print("hello")
-                return redirect(url_for('main.index'))
+                return jsonify({"error": "Forbidden"}), 403
             return f(*args, **kwargs)
         return decorated_function
     return decorator
