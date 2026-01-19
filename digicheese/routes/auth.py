@@ -17,6 +17,7 @@ def login():
       200:
         description: page login
     """
+    print("IN LOGIN ROUTE")
     return render_template('login.html')
 
 @auth.route('/login', methods=['POST'])
@@ -60,12 +61,12 @@ def login_api_post():
     password = request_json.get('password')
 
     user = User.query.filter_by(email=email).first()
-
+    print(User.query.all())
     if not user or not check_password_hash(user.password, password):
         return jsonify({'error': 'Invalid login details'}), 401
 
     login_user(user, remember=True)
-    return jsonify(user.to_json())
+    return jsonify(user.to_json()), 200
 
 @auth.route('/signup')
 def signup():

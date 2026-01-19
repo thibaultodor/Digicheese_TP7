@@ -15,7 +15,7 @@ class Utilisateur(db.Model, UserMixin):
 
     def set_password(self, raw_password: str) -> None:
         """Hash and store the password."""
-        self.password = generate_password_hash(raw_password, method="sha256")
+        self.password = generate_password_hash(raw_password)
 
     def check_password(self, raw_password: str) -> bool:
         """Check the password against the stored hash."""
@@ -31,7 +31,7 @@ class Utilisateur(db.Model, UserMixin):
     def to_json(self):
         return {
             "id": self.id,
-            "nom": self.nom,
+            "name": self.name,
             "email": self.email,
             "roles": [link.role.libelle for link in self.role_links],
         }
