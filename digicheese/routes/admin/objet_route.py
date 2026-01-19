@@ -2,13 +2,16 @@ from flask import Blueprint, jsonify, request
 from flask_login import login_required
 
 from digicheese.decorator.role_required import role_required
+from digicheese.models import Objet
 from digicheese.repositories import ObjetRepository
 from digicheese import db
+from digicheese.repositories.base_repository import BaseRepository
 
 admin_objets = Blueprint('admin_objets', __name__, url_prefix='/admin/objets')
-repo = ObjetRepository(db.session)
+# repo = ObjetRepository(db.session)
+repo = BaseRepository(Objet, db.session)
 
-
+#appel to json dans les models
 @admin_objets.route('/', methods=['GET'])
 @login_required
 @role_required('admin')
@@ -36,16 +39,7 @@ def list_objets():
                 bl_indispo: true
     """
     objets = repo.get_all()
-    return jsonify([
-        {
-            "id": o.id,
-            "libelle": o.libelle,
-            "taille": o.taille,
-            "poids": o.poids,
-            "bl_indispo": o.bl_indispo
-        }
-        for o in objets
-    ])
+    return jsonify([o.to_json() for o in objets]), 200
 
 
 @admin_objets.route('/<int:objet_id>', methods=['GET'])
@@ -80,14 +74,7 @@ def get_objet(objet_id):
     objet = repo.get_by_id(objet_id)
     if not objet:
         return jsonify({"error": "Objet non trouvé"}), 404
-
-    return jsonify({
-        "id": objet.id,
-        "libelle": objet.libelle,
-        "taille": objet.taille,
-        "poids": objet.poids,
-        "bl_indispo": objet.bl_indispo
-    })
+    return objet.to_json()
 
 
 @admin_objets.route('/add', methods=['POST'])

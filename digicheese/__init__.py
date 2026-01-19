@@ -47,8 +47,27 @@ def create_app():
     from .routes.admin.commune_route import admin_communes as admin_communes_blueprint
     app.register_blueprint(admin_communes_blueprint)
 
-    # from .routes.operatorRouter import operator as operator_blueprint
-    # app.register_blueprint(operator_blueprint)
+    from .routes.admin.conditionnemens_route import admin_conditionnements as admin_conditionnements_blueprint
+    app.register_blueprint(admin_conditionnements_blueprint)
+
+
+    from .routes.colis.client_route import colis_clients as colis_clients_blueprint
+    app.register_blueprint(colis_clients_blueprint)
+
+    from .routes.colis.adresse_route import colis_adresses as colis_adresses_blueprint
+    app.register_blueprint(colis_adresses_blueprint)
+
+    from .routes.colis.commande_route import colis_commandes as colis_commandes_blueprint
+    app.register_blueprint(colis_commandes_blueprint)
+
+    from .routes.colis.detail_commande_route import colis_detail_commandes as colis_detail_commandes_blueprint
+    app.register_blueprint(colis_detail_commandes_blueprint)
+
+    from .routes.colis.mailler_route import colis_mailler as colis_mailler_blueprint
+    app.register_blueprint(colis_mailler_blueprint)
+
+    from .routes.colis.statistique_route import colis_statistique as colis_statistiques_blueprint
+    app.register_blueprint(colis_statistiques_blueprint)
 
     Swagger(app)
 
