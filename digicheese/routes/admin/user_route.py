@@ -1,5 +1,8 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required
+
+from digicheese.models import Utilisateur
+from digicheese.repositories.base_repository import BaseRepository
 from digicheese.repositories.r_utilisateur import UtilisateurRepository
 from digicheese.decorator.role_required import role_required
 from digicheese import db
@@ -8,7 +11,8 @@ from werkzeug.security import generate_password_hash
 
 
 admin_users = Blueprint('admin_users',__name__,url_prefix='/admin/users')
-repo = UtilisateurRepository(db.session)
+repo = BaseRepository(Utilisateur, db.session)
+# repo = UtilisateurRepository(db.session)
 
 
 @admin_users.route('/', methods=['GET'])
@@ -25,14 +29,7 @@ def list_users():
         description: Liste des utilisateurs
     """
     users = repo.get_all()
-
-    return jsonify([
-        {
-            "id": u.id,
-            "email": u.email,
-            "name": u.name
-            } for u in users
-    ])
+    return jsonify([user.to_json() for user in users ]), 200
 
 
 @admin_users.route('/<int:user_id>', methods=['GET'])
@@ -63,13 +60,7 @@ def get_user(user_id):
     """
     user = repo.get_by_id(user_id)
     if user:
-        return jsonify([
-            {
-                "id": user.id,
-                "email": user.email,
-                "name": user.name
-            }
-        ])
+        return user.to_json()
     return jsonify({"error": "Utilisateur non trouvé"}), 404
 
 @admin_users.route('/add', methods=['POST'])

@@ -5,7 +5,12 @@ from digicheese import db
 from digicheese.decorator.role_required import role_required
 from digicheese.repositories import CommuneRepository
 
-admin_communes = Blueprint('admin_communes', __name__, url_prefix='/admin/communes')
+admin_communes = Blueprint(
+    'admin_communes',
+    __name__,
+    url_prefix='/admin/communes'
+)
+
 repo = CommuneRepository(db.session)
 
 @admin_communes.route('/', methods=['GET'])
@@ -23,64 +28,50 @@ def list_communes():
         content:
           application/json:
             example:
-              - id: 1
-                cp: "34000"
+              - cp: "34000"
                 commune: "Montpellier"
                 departement: "Hérault"
-              - id: 2
-                cp: "75001"
+              - cp: "75001"
                 commune: "Paris"
                 departement: "Paris"
     """
     communes = repo.get_all()
-    return jsonify([
-        {
-            "id": c.id,
-            "cp": c.cp,
-            "commune": c.commune,
-            "departement": c.departement
-        }
-        for c in communes
-    ])
+    return jsonify([commune.to_json() for commune in communes])
 
 
-@admin_communes.route('/<int:commune_id>', methods=['GET'])
+@admin_communes.route('/<string:cp>', methods=['GET'])
 @login_required
 @role_required('admin')
-def get_commune(commune_id):
+def get_commune(cp):
     """
-    Récupère une commune par ID
+    Récupère une commune par code postal
     ---
     tags:
       - Admin / Communes
     parameters:
-      - name: commune_id
+      - name: cp
         in: path
-        type: integer
         required: true
-        description: ID de la commune à récupérer
+        schema:
+          type: string
+        description: Code postal de la commune
     responses:
       200:
         description: Commune trouvée
         content:
           application/json:
             example:
-              id: 1
               cp: "34000"
               commune: "Montpellier"
               departement: "Hérault"
       404:
         description: Commune non trouvée
     """
-    commune = repo.get_by_id(commune_id)
+    commune = repo.get_by_id(cp)
     if not commune:
         return jsonify({"error": "Commune non trouvée"}), 404
 
-    return jsonify({
-        "cp": commune.cp,
-        "commune": commune.commune,
-        "departement": commune.departement
-    })
+    return commune.to_json()
 
 
 @admin_communes.route('/add', methods=['POST'])
@@ -92,26 +83,26 @@ def add_commune():
     ---
     tags:
       - Admin / Communes
-    parameters:
-      - in: body
-        name: body
-        required: true
-        schema:
-          type: object
-          required:
-            - cp
-            - commune
-            - departement
-          properties:
-            cp:
-              type: string
-              example: "34000"
-            commune:
-              type: string
-              example: "Montpellier"
-            departement:
-              type: string
-              example: "Hérault"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - cp
+              - commune
+              - departement
+            properties:
+              cp:
+                type: string
+                example: "34000"
+              commune:
+                type: string
+                example: "Montpellier"
+              departement:
+                type: string
+                example: "Hérault"
     responses:
       201:
         description: Commune créée
@@ -119,11 +110,12 @@ def add_commune():
           application/json:
             example:
               message: "Commune créée"
-              id: 1
+              cp: "34000"
       400:
         description: Données invalides
     """
     data = request.get_json() or {}
+
     cp = data.get('cp')
     commune_name = data.get('commune')
     departement = data.get('departement')
@@ -131,79 +123,83 @@ def add_commune():
     if not cp or not commune_name or not departement:
         return jsonify({"error": "Champs manquants"}), 400
 
-    commune = repo.add(cp=cp, commune=commune_name, departement=departement)
+    commune = repo.add(
+        cp=cp,
+        commune=commune_name,
+        departement=departement
+    )
 
     return jsonify({
         "message": "Commune créée",
-        "id": commune.id
+        "cp": commune.cp
     }), 201
 
 
-@admin_communes.route('/delete/<int:commune_id>', methods=['DELETE'])
+@admin_communes.route('/delete/<string:cp>', methods=['DELETE'])
 @login_required
 @role_required('admin')
-def delete_commune(commune_id):
+def delete_commune(cp):
     """
-    Supprime une commune par ID
+    Supprime une commune par code postal
     ---
     tags:
       - Admin / Communes
     parameters:
-      - name: commune_id
+      - name: cp
         in: path
-        type: integer
         required: true
-        description: ID de la commune à supprimer
+        schema:
+          type: string
+        description: Code postal de la commune à supprimer
     responses:
       200:
         description: Commune supprimée
         content:
           application/json:
             example:
-              message: "Commune 1 supprimée"
+              message: "Commune 34000 supprimée"
       404:
         description: Commune non trouvée
     """
-    commune = repo.get_by_id(commune_id)
+    commune = repo.get_by_id(cp)
     if not commune:
         return jsonify({"error": "Commune non trouvée"}), 404
 
-    repo.delete(commune_id)
+    repo.delete(cp)
     return jsonify({
-        "message": f"Commune {commune_id} supprimée"
+        "message": f"Commune {cp} supprimée"
     }), 200
 
 
-@admin_communes.route('/update/<int:commune_id>', methods=['PUT'])
+@admin_communes.route('/update/<string:cp>', methods=['PUT'])
 @login_required
 @role_required('admin')
-def update_commune(commune_id):
+def update_commune(cp):
     """
-    Met une commune à jour
+    Met à jour une commune (sans modifier le CP)
     ---
     tags:
       - Admin / Communes
     parameters:
-      - name: commune_id
+      - name: cp
         in: path
-        type: integer
         required: true
-        description: ID de la commune à modifier
-      - in: body
-        name: body
-        required: false
         schema:
-          type: object
-          properties:
-            cp:
-              type: string
-              example: "34000"
-            commune:
-              type: string
-              example: "Montpellier"
-            departement:
-              type: string
-              example: "Hérault"
+          type: string
+        description: Code postal de la commune
+    requestBody:
+      required: false
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              commune:
+                type: string
+                example: "Montpellier"
+              departement:
+                type: string
+                example: "Hérault"
     responses:
       200:
         description: Commune mise à jour
@@ -211,7 +207,7 @@ def update_commune(commune_id):
           application/json:
             example:
               message: "Commune mise à jour"
-              id: 1
+              cp: "34000"
       400:
         description: Aucun champ à mettre à jour
       404:
@@ -220,18 +216,18 @@ def update_commune(commune_id):
     data = request.get_json() or {}
 
     update_data = {}
-    for field in ("cp", "commune", "departement"):
+    for field in ("commune", "departement"):
         if field in data:
             update_data[field] = data[field]
 
     if not update_data:
         return jsonify({"error": "Aucun champ à mettre à jour"}), 400
 
-    commune = repo.update(commune_id, **update_data)
+    commune = repo.update(cp, **update_data)
     if not commune:
         return jsonify({"error": "Commune introuvable"}), 404
 
     return jsonify({
         "message": "Commune mise à jour",
-        "id": commune_id
+        "cp": cp
     }), 200
