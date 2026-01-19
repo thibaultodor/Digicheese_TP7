@@ -1,8 +1,8 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, jsonify, render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
-from .models import Utilisateur as User
-from . import db
+from ..models import Utilisateur as User
+from .. import db
 
 auth = Blueprint('auth', __name__)
 
@@ -42,6 +42,30 @@ def login_post():
 
     login_user(user, remember=remember)
     return redirect(url_for('main.profile'))
+
+@auth.route('/api/login', methods=['POST'])
+def login_api_post():
+    """
+    login d'un compte via API
+    ---
+    tags:
+      - Authentification
+    responses:
+      200:
+        description: login d'un compte
+    """
+
+    request_json = request.json
+    email = request_json.get('email')
+    password = request_json.get('password')
+
+    user = User.query.filter_by(email=email).first()
+
+    if not user or not check_password_hash(user.password, password):
+        return jsonify({'error': 'Invalid login details'}), 401
+
+    login_user(user, remember=True)
+    return jsonify(user.to_json())
 
 @auth.route('/signup')
 def signup():
