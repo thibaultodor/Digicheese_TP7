@@ -17,7 +17,6 @@ def login():
       200:
         description: page login
     """
-    print("IN LOGIN ROUTE")
     return render_template('login.html')
 
 @auth.route('/login', methods=['POST'])
@@ -44,7 +43,7 @@ def login_post():
     login_user(user, remember=remember)
     return redirect(url_for('main.profile'))
 
-@auth.route('/api/login', methods=['POST'])
+@auth.route('/api-login', methods=['POST'])
 def login_api_post():
     """
     Login via API
@@ -144,3 +143,18 @@ def logout():
     """
     logout_user()
     return redirect(url_for('main.index'))
+
+@auth.route('/api-logout')
+@login_required
+def api_logout():
+    """
+    deconnexion via API
+    ---
+    tags:
+      - Authentification
+    responses:
+      200:
+        description: deconnexion
+    """
+    logout_user()
+    return jsonify({'message': 'Logged out successfully'}), 200
