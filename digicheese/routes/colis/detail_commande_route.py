@@ -17,7 +17,7 @@ repo = DetailCommandeRepository(db.session)
 
 @colis_detail_commandes.route('/', methods=['GET'])
 @login_required
-@role_required('admin')
+@role_required('colis')
 def list_detail_commandes():
     """
     Liste tous les détails de commandes
@@ -49,7 +49,7 @@ def list_detail_commandes():
 
 @colis_detail_commandes.route('/<int:detail_id>', methods=['GET'])
 @login_required
-@role_required('admin')
+@role_required('colis')
 def get_detail_commande(detail_id):
     """
     Récupère un détail de commande par ID
@@ -87,7 +87,7 @@ def get_detail_commande(detail_id):
 
 @colis_detail_commandes.route('/add', methods=['POST'])
 @login_required
-@role_required('admin')
+@role_required('colis')
 def add_detail_commande():
     """
     Ajoute un détail de commande
@@ -155,7 +155,7 @@ def add_detail_commande():
 
 @colis_detail_commandes.route('/update/<int:detail_id>', methods=['PUT'])
 @login_required
-@role_required('admin')
+@role_required('colis')
 def update_detail_commande(detail_id):
     """
     Met à jour un détail de commande
@@ -222,7 +222,7 @@ def update_detail_commande(detail_id):
 
 @colis_detail_commandes.route('/delete/<int:detail_id>', methods=['DELETE'])
 @login_required
-@role_required('admin')
+@role_required('colis')
 def delete_detail_commande(detail_id):
     """
     Supprime un détail de commande
