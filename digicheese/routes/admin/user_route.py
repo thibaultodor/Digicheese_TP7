@@ -1,8 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required
 
-from digicheese.models import Utilisateur
-from digicheese.repositories.base_repository import BaseRepository
 from digicheese.repositories.r_utilisateur import UtilisateurRepository
 from digicheese.decorator.role_required import role_required
 from digicheese import db
@@ -11,8 +9,7 @@ from werkzeug.security import generate_password_hash
 
 
 admin_users = Blueprint('admin_users',__name__,url_prefix='/admin/users')
-repo = BaseRepository(Utilisateur, db.session)
-# repo = UtilisateurRepository(db.session)
+repo = UtilisateurRepository(db.session)
 
 
 @admin_users.route('/', methods=['GET'])
@@ -60,7 +57,7 @@ def get_user(user_id):
     """
     user = repo.get_by_id(user_id)
     if user:
-        return user.to_json()
+        return user.to_json(),200
     return jsonify({"error": "Utilisateur non trouvé"}), 404
 
 @admin_users.route('/add', methods=['POST'])
@@ -138,6 +135,10 @@ def delete_user(user_id):
       404:
         description: Utilisateur non trouvé
     """
+    user = repo.get_by_id(user_id)
+    if not user:
+        return jsonify({"error": "Utilisateur non trouvé"}), 404
+
     repo.delete(user_id)
     return jsonify({
         "message": "Utilisateur suprimé",
@@ -187,7 +188,10 @@ def update_user(user_id):
     update_data = {}
     for field in ("email", "name", "password"):
         if field in data and data[field] is not None:
-            update_data[field] = data[field]
+            if field == "password":
+                update_data[field] = generate_password_hash(data[field])
+            else:
+                update_data[field] = data[field]
 
     if not update_data:
         return jsonify({"error": "Aucun champ à mettre à jour"}), 400

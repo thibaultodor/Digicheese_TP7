@@ -3,8 +3,7 @@ from flask_login import login_required
 
 from digicheese import db
 from digicheese.decorator.role_required import role_required
-from digicheese.models import Commande
-from digicheese.repositories.base_repository import BaseRepository
+from digicheese.repositories import CommandeRepository
 
 
 colis_commandes = Blueprint(
@@ -13,12 +12,12 @@ colis_commandes = Blueprint(
     url_prefix='/colis/commandes'
 )
 
-repo = BaseRepository(Commande, db.session)
+repo = CommandeRepository(db.session)
 
 
 @colis_commandes.route('/', methods=['GET'])
 @login_required
-@role_required('admin')
+@role_required('colis')
 def list_commandes():
     """
     Liste toutes les commandes
@@ -44,7 +43,7 @@ def list_commandes():
 
 @colis_commandes.route('/<int:commande_id>', methods=['GET'])
 @login_required
-@role_required('admin')
+@role_required('colis')
 def get_commande(commande_id):
     """
     Récupère une commande par ID
@@ -82,7 +81,7 @@ def get_commande(commande_id):
 
 @colis_commandes.route('/add', methods=['POST'])
 @login_required
-@role_required('admin')
+@role_required('colis')
 def add_commande():
     """
     Ajoute une commande
@@ -163,7 +162,7 @@ def add_commande():
 
 @colis_commandes.route('/update/<int:commande_id>', methods=['PUT'])
 @login_required
-@role_required('admin')
+@role_required('colis')
 def update_commande(commande_id):
     """
     Met à jour une commande
@@ -238,7 +237,7 @@ def update_commande(commande_id):
 
 @colis_commandes.route('/delete/<int:commande_id>', methods=['DELETE'])
 @login_required
-@role_required('admin')
+@role_required('colis')
 def delete_commande(commande_id):
     """
     Supprime une commande

@@ -36,7 +36,7 @@ def list_communes():
                 departement: "Paris"
     """
     communes = repo.get_all()
-    return jsonify([commune.to_json() for commune in communes])
+    return jsonify([commune.to_json() for commune in communes]), 200
 
 
 @admin_communes.route('/<string:cp>', methods=['GET'])
@@ -71,7 +71,7 @@ def get_commune(cp):
     if not commune:
         return jsonify({"error": "Commune non trouvée"}), 404
 
-    return commune.to_json()
+    return commune.to_json(), 200
 
 
 @admin_communes.route('/add', methods=['POST'])

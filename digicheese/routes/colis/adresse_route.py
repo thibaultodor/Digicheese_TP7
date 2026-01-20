@@ -3,8 +3,7 @@ from flask_login import login_required
 
 from digicheese import db
 from digicheese.decorator.role_required import role_required
-from digicheese.models import Adresse
-from digicheese.repositories.base_repository import BaseRepository
+from digicheese.repositories import AdresseRepository
 
 colis_adresses = Blueprint(
     'colis_adresses',
@@ -12,7 +11,7 @@ colis_adresses = Blueprint(
     url_prefix='/colis/adresses'
 )
 
-repo = BaseRepository(Adresse, db.session)
+repo = AdresseRepository(db.session)
 
 
 
