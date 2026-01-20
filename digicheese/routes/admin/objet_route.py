@@ -95,7 +95,7 @@ def add_objet():
           properties:
             libelle:
               type: string
-              example: "Épée"
+              example: "Casquette"
             taille:
               type: string
               example: "M"
@@ -192,7 +192,7 @@ def update_objet(objet_id):
           properties:
             libelle:
               type: string
-              example: "Épée"
+              example: "T-shirt"
             taille:
               type: string
               example: "M"
