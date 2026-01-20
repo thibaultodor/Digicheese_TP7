@@ -2,16 +2,12 @@ from flask import Blueprint, jsonify, request
 from flask_login import login_required
 
 from digicheese.decorator.role_required import role_required
-from digicheese.models import Objet
 from digicheese.repositories import ObjetRepository
 from digicheese import db
-from digicheese.repositories.base_repository import BaseRepository
 
 admin_objets = Blueprint('admin_objets', __name__, url_prefix='/admin/objets')
-# repo = ObjetRepository(db.session)
-repo = BaseRepository(Objet, db.session)
+repo = ObjetRepository(db.session)
 
-#appel to json dans les models
 @admin_objets.route('/', methods=['GET'])
 @login_required
 @role_required('admin')
@@ -74,7 +70,7 @@ def get_objet(objet_id):
     objet = repo.get_by_id(objet_id)
     if not objet:
         return jsonify({"error": "Objet non trouvé"}), 404
-    return objet.to_json()
+    return objet.to_json(), 200
 
 
 @admin_objets.route('/add', methods=['POST'])
@@ -99,7 +95,7 @@ def add_objet():
           properties:
             libelle:
               type: string
-              example: "Épée"
+              example: "Casquette"
             taille:
               type: string
               example: "M"
@@ -196,7 +192,7 @@ def update_objet(objet_id):
           properties:
             libelle:
               type: string
-              example: "Épée"
+              example: "T-shirt"
             taille:
               type: string
               example: "M"

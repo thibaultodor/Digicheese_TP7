@@ -3,8 +3,7 @@ from flask_login import login_required
 
 from digicheese import db
 from digicheese.decorator.role_required import role_required
-from digicheese.models import DetailCommande
-from digicheese.repositories.base_repository import BaseRepository
+from digicheese.repositories import DetailCommandeRepository
 
 colis_detail_commandes = Blueprint(
     'colis_detail_commandes',
@@ -12,7 +11,7 @@ colis_detail_commandes = Blueprint(
     url_prefix='/colis/detail_commandes'
 )
 
-repo = BaseRepository(DetailCommande, db.session)
+repo = DetailCommandeRepository(db.session)
 
 
 

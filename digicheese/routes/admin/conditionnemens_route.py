@@ -3,14 +3,11 @@ from flask_login import login_required
 
 from digicheese import db
 from digicheese.decorator.role_required import role_required
-from digicheese.models import Conditionnement
-from digicheese.repositories.base_repository import BaseRepository
-from digicheese.routes.admin.commune_route import repo
+from digicheese.repositories import ConditionnementRepository
 
 admin_conditionnements = Blueprint('admin_conditionnements',__name__,url_prefix='/admin/conditionnements')
 
-repo = BaseRepository(Conditionnement, db.session)
-# repo = ConditionnementRepository(db.session)
+repo = ConditionnementRepository(db.session)
 
 
 @admin_conditionnements.route('/', methods=['GET'])
@@ -38,7 +35,7 @@ def list_conditionnements():
                 ordre_imp: 2
     """
     conditionnements = repo.get_all()
-    return jsonify([c.to_json() for c in conditionnements])
+    return jsonify([c.to_json() for c in conditionnements]), 200
 
 
 
@@ -75,7 +72,7 @@ def get_conditionnement(conditionnement_id):
     if not conditionnement:
         return jsonify({"error": "Conditionnement non trouvé"}), 404
 
-    return jsonify(conditionnement.to_json())
+    return jsonify(conditionnement.to_json()),200
 
 
 @admin_conditionnements.route('/add', methods=['POST'])
