@@ -48,7 +48,7 @@ def client(app):
 def authenticated_admin_client(client):
     with client:
         client.post(
-            "/api/login",
+            "/api-login",
             headers={"Content-Type": "application/json"},
             json={"email": "admin@test.com", "password": "admin123"}
         )
@@ -59,7 +59,7 @@ def authenticated_package_client(client):
     """Client authenticated as a regular user"""
     with client:
         client.post(
-            "/api/login",
+            "/api-login",
             headers={"Content-Type": "application/json"},
             json={"email": "colis@test.com", "password": "colis123"}
         )
