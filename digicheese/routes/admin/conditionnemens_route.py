@@ -184,22 +184,25 @@ def update_conditionnement(conditionnement_id):
         schema:
           type: integer
         description: ID du conditionnement à modifier
-    requestBody:
-      required: false
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              libelle:
-                type: string
-                example: "Carton renforcé"
-              poids_condit:
-                type: number
-                example: 3.0
-              ordre_imp:
-                type: integer
-                example: 1
+      - in: body
+        name: body
+        required: true
+        schema:
+          type: object
+          required:
+            - libelle
+            - poids_condit
+            - ordre_imp
+          properties:
+            libelle:
+              type: string
+              example: "Carton"
+            poids_condit:
+              type: number
+              example: 2.5
+            ordre_imp:
+              type: integer
+              example: 1
     responses:
       200:
         description: Conditionnement mis à jour

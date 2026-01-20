@@ -143,19 +143,21 @@ def update_client(client_id):
         schema:
           type: integer
         description: ID du client
-    requestBody:
-      required: false
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              email_client:
-                type: string
-                example: "new@mail.com"
-              adresse_id:
-                type: integer
-                example: 5
+      - in: body
+        name: body
+        required: true
+        schema:
+          type: object
+          required:
+            - email_client
+            - adresse_id
+          properties:
+            email_client:
+              type: string
+              example: "client@test.com"
+            adresse_id:
+              type: integer
+              example: 3
     responses:
       200:
         description: Client mis à jour

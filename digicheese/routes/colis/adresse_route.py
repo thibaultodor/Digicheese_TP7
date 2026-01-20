@@ -161,7 +161,6 @@ def update_adresse(adresse_id):
         schema:
           type: integer
         description: ID de l'adresse
-    parameters:
       - in: body
         name: body
         required: false

@@ -83,26 +83,26 @@ def add_commune():
     ---
     tags:
       - Admin / Communes
-    requestBody:
-      required: true
-      content:
-        application/json:
-          schema:
-            type: object
-            required:
-              - cp
-              - commune
-              - departement
-            properties:
-              cp:
-                type: string
-                example: "34000"
-              commune:
-                type: string
-                example: "Montpellier"
-              departement:
-                type: string
-                example: "Hérault"
+    parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          type: object
+          required:
+            - cp
+            - commune
+            - departement
+          properties:
+            cp:
+              type: string
+              example: "34000"
+            commune:
+              type: string
+              example: "Montpellier"
+            departement:
+              type: string
+              example: "Hérault"
     responses:
       201:
         description: Commune créée
@@ -183,31 +183,24 @@ def update_commune(cp):
     parameters:
       - name: cp
         in: path
+        type: string
         required: true
-        schema:
-          type: string
         description: Code postal de la commune
-    requestBody:
-      required: false
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              commune:
-                type: string
-                example: "Montpellier"
-              departement:
-                type: string
-                example: "Hérault"
+      - in: body
+        name: body
+        required: false
+        schema:
+          type: object
+          properties:
+            commune:
+              type: string
+              example: "Montpellier"
+            departement:
+              type: string
+              example: "Hérault"
     responses:
       200:
         description: Commune mise à jour
-        content:
-          application/json:
-            example:
-              message: "Commune mise à jour"
-              cp: "34000"
       400:
         description: Aucun champ à mettre à jour
       404:
