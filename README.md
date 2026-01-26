@@ -128,6 +128,7 @@ python -m flask run
 ## Insert Database
 
 Insérer le fichier sql sur la database afin d'avoir les utilisateurs pour se connecter
+Les mots de passe pour chaque utilisateur est le même: tt
 
 ---
 
