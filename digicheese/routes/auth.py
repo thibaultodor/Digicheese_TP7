@@ -58,15 +58,11 @@ def login_api_post():
           type: object
           required:
             - email
-            - name
             - password
           properties:
             email:
               type: string
               example: test@mail.com
-            name:
-              type: string
-              example: Julien
             password:
               type: string
               example: secret123
@@ -82,7 +78,7 @@ def login_api_post():
     password = request_json.get('password')
 
     user = User.query.filter_by(email=email).first()
-    print(User.query.all())
+    print(user)
     if not user or not check_password_hash(user.password, password):
         return jsonify({'error': 'Invalid login details'}), 401
 

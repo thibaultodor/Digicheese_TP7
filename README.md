@@ -61,8 +61,16 @@ Digicheese_TP7/
 ## 🚀 Lancement rapide
 
 ```bash
+python -m venv .venv
+source .venv/bin/activate
 python -m flask run
 ```
+
+---
+
+## Insert Database
+
+Insérer le fichier sql sur la database afin d'avoir les utilisateurs pour se connecter
 
 ---
 
