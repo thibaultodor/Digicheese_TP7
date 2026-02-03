@@ -1,6 +1,6 @@
 """Repository for stock update operations."""
 from digicheese.repositories.base_repository import BaseRepository
-from ..models import MiseAJourStock
+from ..models import MiseAJour
 
 
 class MiseAJourRepository(BaseRepository):

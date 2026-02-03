@@ -1,6 +1,6 @@
 """Repository for price operations."""
 from digicheese.repositories.base_repository import BaseRepository
-from ..models import PrixObjet
+from ..models import Prix
 
 
 class PrixRepository(BaseRepository):
