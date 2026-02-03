@@ -1,4 +1,5 @@
 """Packaging model for managing packaging types."""
+
 from .. import db
 
 
@@ -21,7 +22,9 @@ class Conditionnement(db.Model):
             "id": self.id,
             "libelle": self.libelle,
             "poids_condit": (
-                float(self.poids_condit) if self.poids_condit is not None else None
+                float(self.poids_condit)
+                if self.poids_condit is not None
+                else None
             ),
             "ordre_imp": self.ordre_imp,
         }

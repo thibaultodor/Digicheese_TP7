@@ -1,4 +1,5 @@
 """Client model for managing customer information."""
+
 from .. import db
 
 
@@ -9,7 +10,9 @@ class Client(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     email_client = db.Column(db.String(150), nullable=True)
-    adresse_id = db.Column(db.Integer, db.ForeignKey("adresse.id"), nullable=False)
+    adresse_id = db.Column(
+        db.Integer, db.ForeignKey("adresse.id"), nullable=False
+    )
 
     adresse = db.relationship("Adresse", back_populates="clients")
     commandes = db.relationship("Commande", back_populates="client")

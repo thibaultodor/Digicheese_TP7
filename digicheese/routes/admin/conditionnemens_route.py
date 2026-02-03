@@ -1,4 +1,5 @@
 """Admin routes for packaging management."""
+
 from flask import Blueprint, jsonify, request
 from flask_login import login_required
 
@@ -125,10 +126,15 @@ def add_conditionnement():
         libelle=libelle, poids_condit=poids_condit, ordre_imp=ordre_imp
     )
 
-    return jsonify({"message": "Conditionnement créé", "id": conditionnement.id}), 201
+    return (
+        jsonify({"message": "Conditionnement créé", "id": conditionnement.id}),
+        201,
+    )
 
 
-@admin_conditionnements.route("/delete/<int:conditionnement_id>", methods=["DELETE"])
+@admin_conditionnements.route(
+    "/delete/<int:conditionnement_id>", methods=["DELETE"]
+)
 @login_required
 @role_required("admin")
 def delete_conditionnement(conditionnement_id):
@@ -159,10 +165,15 @@ def delete_conditionnement(conditionnement_id):
         return jsonify({"error": "Conditionnement non trouvé"}), 404
 
     repo.delete(conditionnement_id)
-    return jsonify({"message": f"Conditionnement {conditionnement_id} supprimé"}), 200
+    return (
+        jsonify({"message": f"Conditionnement {conditionnement_id} supprimé"}),
+        200,
+    )
 
 
-@admin_conditionnements.route("/update/<int:conditionnement_id>", methods=["PUT"])
+@admin_conditionnements.route(
+    "/update/<int:conditionnement_id>", methods=["PUT"]
+)
 @login_required
 @role_required("admin")
 def update_conditionnement(conditionnement_id):
@@ -225,6 +236,8 @@ def update_conditionnement(conditionnement_id):
         return jsonify({"error": "Conditionnement introuvable"}), 404
 
     return (
-        jsonify({"message": "Conditionnement mis à jour", "id": conditionnement_id}),
+        jsonify(
+            {"message": "Conditionnement mis à jour", "id": conditionnement_id}
+        ),
         200,
     )

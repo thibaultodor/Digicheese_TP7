@@ -33,6 +33,8 @@ class TestAuth:
     # TEST LOGOUT
     def test_logout(self, authenticated_admin_client):
         """Test logout functionality."""
-        response = authenticated_admin_client.get("/api-logout", follow_redirects=True)
+        response = authenticated_admin_client.get(
+            "/api-logout", follow_redirects=True
+        )
         assert "Logged out successfully" in response.get_data(as_text=True)
         assert response.status_code == 200

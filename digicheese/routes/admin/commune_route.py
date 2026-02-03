@@ -1,4 +1,5 @@
 """Admin routes for commune management."""
+
 from flask import Blueprint, jsonify, request
 from flask_login import login_required
 
@@ -6,7 +7,9 @@ from digicheese import db
 from digicheese.decorator.role_required import role_required
 from digicheese.repositories import CommuneRepository
 
-admin_communes = Blueprint("admin_communes", __name__, url_prefix="/admin/communes")
+admin_communes = Blueprint(
+    "admin_communes", __name__, url_prefix="/admin/communes"
+)
 
 repo = CommuneRepository(db.session)
 

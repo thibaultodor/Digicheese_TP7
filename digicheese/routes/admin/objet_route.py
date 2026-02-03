@@ -1,4 +1,5 @@
 """Admin routes for object/product management."""
+
 from flask import Blueprint, jsonify, request
 from flask_login import login_required
 
@@ -128,7 +129,9 @@ def add_objet():
     if not libelle or not taille or poids is None:
         return jsonify({"error": "Champs manquants"}), 400
 
-    objet = repo.add(libelle=libelle, taille=taille, poids=poids, bl_indispo=bl_indispo)
+    objet = repo.add(
+        libelle=libelle, taille=taille, poids=poids, bl_indispo=bl_indispo
+    )
 
     return jsonify({"message": "Objet créé", "id": objet.id}), 201
 

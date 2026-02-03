@@ -3,6 +3,7 @@ Digicheese application package.
 
 This module initializes the Flask application and configures extensions.
 """
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
@@ -39,8 +40,12 @@ def create_app():
     from .routes.auth import auth as auth_blueprint
     from .routes.main import main as main_blueprint
     from .routes.admin.user_route import admin_users as admin_users_blueprint
-    from .routes.admin.objet_route import admin_objets as admin_objets_blueprint
-    from .routes.admin.commune_route import admin_communes as admin_communes_blueprint
+    from .routes.admin.objet_route import (
+        admin_objets as admin_objets_blueprint,
+    )
+    from .routes.admin.commune_route import (
+        admin_communes as admin_communes_blueprint,
+    )
 
     app.register_blueprint(main_blueprint)
     app.register_blueprint(auth_blueprint)
@@ -59,11 +64,15 @@ def create_app():
 
     app.register_blueprint(admin_conditionnements_blueprint)
 
-    from .routes.colis.client_route import colis_clients as colis_clients_blueprint
+    from .routes.colis.client_route import (
+        colis_clients as colis_clients_blueprint,
+    )
 
     app.register_blueprint(colis_clients_blueprint)
 
-    from .routes.colis.adresse_route import colis_adresses as colis_adresses_blueprint
+    from .routes.colis.adresse_route import (
+        colis_adresses as colis_adresses_blueprint,
+    )
 
     app.register_blueprint(colis_adresses_blueprint)
 
@@ -79,7 +88,9 @@ def create_app():
 
     app.register_blueprint(colis_detail_commandes_blueprint)
 
-    from .routes.colis.mailler_route import colis_mailler as colis_mailler_blueprint
+    from .routes.colis.mailler_route import (
+        colis_mailler as colis_mailler_blueprint,
+    )
 
     app.register_blueprint(colis_mailler_blueprint)
 

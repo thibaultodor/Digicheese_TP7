@@ -1,4 +1,5 @@
 """Stock update model for tracking inventory changes."""
+
 from datetime import date
 from .. import db
 

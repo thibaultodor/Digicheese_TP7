@@ -1,4 +1,5 @@
 """User model for application authentication and authorization."""
+
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from .. import db
@@ -34,7 +35,9 @@ class Utilisateur(db.Model, UserMixin):
         return any(link.role.libelle == role_label for link in self.role_links)
 
     def __str__(self):
-        return f"Utilisateur(id={self.id}, name={self.name}, email={self.email})"
+        return (
+            f"Utilisateur(id={self.id}, name={self.name}, email={self.email})"
+        )
 
     def to_json(self):
         return {

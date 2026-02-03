@@ -1,4 +1,5 @@
 """Colis routes for order detail management."""
+
 from flask import Blueprint, jsonify, request
 from flask_login import login_required
 
@@ -133,7 +134,12 @@ def add_detail_commande():
     commande_id = data.get("commande_id")
     objet_id = data.get("objet_id")
 
-    if quantite is None or colis is None or commande_id is None or objet_id is None:
+    if (
+        quantite is None
+        or colis is None
+        or commande_id is None
+        or objet_id is None
+    ):
         return jsonify({"error": "Champs manquants"}), 400
 
     detail = repo.add(
@@ -144,7 +150,10 @@ def add_detail_commande():
         objet_id=objet_id,
     )
 
-    return jsonify({"message": "Détail de commande créé", "id": detail.id}), 201
+    return (
+        jsonify({"message": "Détail de commande créé", "id": detail.id}),
+        201,
+    )
 
 
 @colis_detail_commandes.route("/update/<int:detail_id>", methods=["PUT"])
@@ -195,7 +204,13 @@ def update_detail_commande(detail_id):
     data = request.get_json() or {}
 
     update_data = {}
-    for field in ("quantite", "colis", "commentaire", "commande_id", "objet_id"):
+    for field in (
+        "quantite",
+        "colis",
+        "commentaire",
+        "commande_id",
+        "objet_id",
+    ):
         if field in data:
             update_data[field] = data[field]
 
@@ -206,7 +221,10 @@ def update_detail_commande(detail_id):
     if not detail:
         return jsonify({"error": "Détail de commande non trouvé"}), 404
 
-    return jsonify({"message": "Détail de commande mis à jour", "id": detail_id}), 200
+    return (
+        jsonify({"message": "Détail de commande mis à jour", "id": detail_id}),
+        200,
+    )
 
 
 @colis_detail_commandes.route("/delete/<int:detail_id>", methods=["DELETE"])
@@ -240,4 +258,7 @@ def delete_detail_commande(detail_id):
         return jsonify({"error": "Détail de commande non trouvé"}), 404
 
     repo.delete(detail_id)
-    return jsonify({"message": f"Détail de commande {detail_id} supprimé"}), 200
+    return (
+        jsonify({"message": f"Détail de commande {detail_id} supprimé"}),
+        200,
+    )

@@ -1,4 +1,5 @@
 """Object model for managing gift items and goodies."""
+
 from .. import db
 
 
@@ -14,12 +15,17 @@ class Objet(db.Model):
     bl_indispo = db.Column(db.Boolean, default=False)
 
     prix = db.relationship(
-        "Prix", back_populates="objet", uselist=False, cascade="all, delete-orphan"
+        "Prix",
+        back_populates="objet",
+        uselist=False,
+        cascade="all, delete-orphan",
     )
     mises_a_jour = db.relationship(
         "MiseAJour", back_populates="objet", cascade="all, delete-orphan"
     )
-    detail_commandes = db.relationship("DetailCommande", back_populates="objet")
+    detail_commandes = db.relationship(
+        "DetailCommande", back_populates="objet"
+    )
     stock_lignes = db.relationship("StockLigne", back_populates="objet")
     boutiques = db.relationship("Boutique", back_populates="objet")
     rel_conds = db.relationship("RelCond", back_populates="objet")

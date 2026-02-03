@@ -1,4 +1,5 @@
 """Role model for managing user roles and permissions."""
+
 from .. import db
 
 

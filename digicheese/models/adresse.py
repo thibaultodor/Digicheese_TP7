@@ -1,4 +1,5 @@
 """Address model for managing customer addresses."""
+
 from .. import db
 
 
@@ -11,7 +12,9 @@ class Adresse(db.Model):
     comp_adresse1 = db.Column(db.String(255), nullable=False)
     comp_adresse2 = db.Column(db.String(255), nullable=True)
     comp_adresse3 = db.Column(db.String(255), nullable=True)
-    commune_cp = db.Column(db.String(10), db.ForeignKey("commune.cp"), nullable=False)
+    commune_cp = db.Column(
+        db.String(10), db.ForeignKey("commune.cp"), nullable=False
+    )
 
     commune = db.relationship("Commune", back_populates="adresses")
     clients = db.relationship("Client", back_populates="adresse")

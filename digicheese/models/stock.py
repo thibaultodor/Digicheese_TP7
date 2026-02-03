@@ -1,4 +1,5 @@
 """Stock model for managing stock locations and types."""
+
 from .. import db
 
 

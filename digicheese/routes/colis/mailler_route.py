@@ -1,10 +1,13 @@
 """Colis routes for mailing operations."""
+
 from flask import Blueprint, jsonify
 from flask_login import login_required
 
 from digicheese.decorator.role_required import role_required
 
-colis_mailler = Blueprint("colis_mailler", __name__, url_prefix="/colis/mailler")
+colis_mailler = Blueprint(
+    "colis_mailler", __name__, url_prefix="/colis/mailler"
+)
 
 
 @colis_mailler.route("/template", methods=["GET"])

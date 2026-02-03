@@ -1,4 +1,5 @@
 """Price model for managing object prices."""
+
 from .. import db
 
 

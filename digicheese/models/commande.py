@@ -1,4 +1,5 @@
 """Order model for managing customer orders."""
+
 from .. import db
 
 
@@ -14,15 +15,21 @@ class Commande(db.Model):
 
     nb_colis = db.Column(db.Integer, nullable=True)
     b_archive = db.Column(db.Boolean, default=False)
-    client_id = db.Column(db.Integer, db.ForeignKey("client.id"), nullable=False)
+    client_id = db.Column(
+        db.Integer, db.ForeignKey("client.id"), nullable=False
+    )
     conditionnement_id = db.Column(
         db.Integer, db.ForeignKey("conditionnement.id"), nullable=False
     )
 
     client = db.relationship("Client", back_populates="commandes")
-    conditionnement = db.relationship("Conditionnement", back_populates="commandes")
+    conditionnement = db.relationship(
+        "Conditionnement", back_populates="commandes"
+    )
     details = db.relationship(
-        "DetailCommande", back_populates="commande", cascade="all, delete-orphan"
+        "DetailCommande",
+        back_populates="commande",
+        cascade="all, delete-orphan",
     )
 
     def to_json(self):

@@ -1,4 +1,5 @@
 """Colis routes for address management."""
+
 from flask import Blueprint, jsonify, request
 from flask_login import login_required
 
@@ -6,7 +7,9 @@ from digicheese import db
 from digicheese.decorator.role_required import role_required
 from digicheese.repositories import AdresseRepository
 
-colis_adresses = Blueprint("colis_adresses", __name__, url_prefix="/colis/adresses")
+colis_adresses = Blueprint(
+    "colis_adresses", __name__, url_prefix="/colis/adresses"
+)
 
 repo = AdresseRepository(db.session)
 
@@ -185,7 +188,12 @@ def update_adresse(adresse_id):
     data = request.get_json() or {}
 
     update_data = {}
-    for field in ("comp_adresse1", "comp_adresse2", "comp_adresse3", "commune_cp"):
+    for field in (
+        "comp_adresse1",
+        "comp_adresse2",
+        "comp_adresse3",
+        "commune_cp",
+    ):
         if field in data:
             update_data[field] = data[field]
 

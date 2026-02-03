@@ -1,4 +1,5 @@
 """Commune model for managing postal codes, cities, and departments."""
+
 from .. import db
 
 

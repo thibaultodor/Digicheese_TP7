@@ -1,4 +1,5 @@
 """User-role association model for many-to-many relationships."""
+
 from .. import db
 
 
@@ -7,7 +8,9 @@ class RolesUtilisateur(db.Model):
 
     __tablename__ = "roles_utilisateur"
 
-    user_id = db.Column(db.Integer, db.ForeignKey("utilisateur.id"), primary_key=True)
+    user_id = db.Column(
+        db.Integer, db.ForeignKey("utilisateur.id"), primary_key=True
+    )
     role_id = db.Column(db.Integer, db.ForeignKey("role.id"), primary_key=True)
 
     user = db.relationship("Utilisateur", back_populates="role_links")

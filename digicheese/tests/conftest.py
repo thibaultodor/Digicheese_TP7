@@ -1,4 +1,5 @@
 """Pytest configuration and fixtures for Digicheese tests."""
+
 import pytest
 
 from .. import create_app

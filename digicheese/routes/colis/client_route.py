@@ -1,4 +1,5 @@
 """Colis routes for client management."""
+
 from flask import Blueprint, jsonify, request
 from flask_login import login_required
 
@@ -6,7 +7,9 @@ from digicheese import db
 from digicheese.decorator.role_required import role_required
 from digicheese.repositories import ClientRepository
 
-colis_clients = Blueprint("colis_clients", __name__, url_prefix="/colis/clients")
+colis_clients = Blueprint(
+    "colis_clients", __name__, url_prefix="/colis/clients"
+)
 
 repo = ClientRepository(db.session)
 

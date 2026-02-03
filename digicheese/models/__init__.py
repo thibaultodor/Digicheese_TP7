@@ -1,4 +1,5 @@
 """Models package for Digicheese database entities."""
+
 from .adresse import Adresse
 from .boutique import Boutique
 from .client import Client

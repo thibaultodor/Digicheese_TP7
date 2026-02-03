@@ -1,4 +1,12 @@
-from flask import Blueprint, jsonify, render_template, request, redirect, url_for, flash
+from flask import (
+    Blueprint,
+    jsonify,
+    render_template,
+    request,
+    redirect,
+    url_for,
+    flash,
+)
 from flask_login import login_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from ..models import Utilisateur as User
@@ -128,7 +136,9 @@ def signup_post():
         flash("Email address already exists")
         return redirect(url_for("auth.signup"))
 
-    new_user = User(email=email, name=name, password=generate_password_hash(password))
+    new_user = User(
+        email=email, name=name, password=generate_password_hash(password)
+    )
     db.session.add(new_user)
     db.session.commit()
 

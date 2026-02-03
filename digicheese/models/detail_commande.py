@@ -1,4 +1,5 @@
 """Order detail model for managing items in orders."""
+
 from .. import db
 
 
@@ -11,7 +12,9 @@ class DetailCommande(db.Model):
     quantite = db.Column(db.Integer, nullable=False, default=1)
     colis = db.Column(db.Integer, nullable=True)
     commentaire = db.Column(db.Text, nullable=True)
-    commande_id = db.Column(db.Integer, db.ForeignKey("commande.id"), nullable=False)
+    commande_id = db.Column(
+        db.Integer, db.ForeignKey("commande.id"), nullable=False
+    )
     objet_id = db.Column(db.Integer, db.ForeignKey("objet.id"), nullable=False)
 
     commande = db.relationship("Commande", back_populates="details")

@@ -1,4 +1,5 @@
 """Boutique model for tracking separate dated quantities in boutique context."""
+
 from .. import db
 
 

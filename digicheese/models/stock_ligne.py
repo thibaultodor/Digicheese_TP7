@@ -1,4 +1,5 @@
 """Stock line model for tracking object quantities with optional dates."""
+
 from .. import db
 
 
@@ -12,9 +13,7 @@ class StockLigne(db.Model):
     date_deb = db.Column(db.Date, nullable=True)
     date_fin = db.Column(db.Date, nullable=True)
     quantite_stock = db.Column(db.Integer, nullable=False, default=0)
-    objet_id = db.Column(
-        db.Integer, db.ForeignKey("objet.id"), nullable=False
-    )
+    objet_id = db.Column(db.Integer, db.ForeignKey("objet.id"), nullable=False)
     stock_id = db.Column(db.Integer, db.ForeignKey("stock.id"), nullable=True)
 
     objet = db.relationship("Objet", back_populates="stock_lignes")

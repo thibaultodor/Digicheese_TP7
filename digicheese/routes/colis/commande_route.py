@@ -1,4 +1,5 @@
 """Colis routes for order management."""
+
 from flask import Blueprint, jsonify, request
 from flask_login import login_required
 
@@ -6,7 +7,9 @@ from digicheese import db
 from digicheese.decorator.role_required import role_required
 from digicheese.repositories import CommandeRepository
 
-colis_commandes = Blueprint("colis_commandes", __name__, url_prefix="/colis/commandes")
+colis_commandes = Blueprint(
+    "colis_commandes", __name__, url_prefix="/colis/commandes"
+)
 
 repo = CommandeRepository(db.session)
 

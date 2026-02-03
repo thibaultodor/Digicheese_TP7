@@ -1,4 +1,5 @@
 """Tests for admin functionality."""
+
 from pprint import pprint
 
 
