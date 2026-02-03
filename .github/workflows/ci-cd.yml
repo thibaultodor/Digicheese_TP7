@@ -21,7 +21,7 @@ jobs:
 
 
     - name: Run linters
-      run: flake8 app.py
+      run: flake8 digicheese/
 
     - name: Run tests
-      run: pytest -- maxfail =1 --disable - warnings -q
+      run: pytest --maxfail=1 --disable-warnings digicheese/tests/
