@@ -8,20 +8,24 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+      - uses: actions/checkout@v3
 
-    - uses: actions/checkout@v3
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.14'
 
-    - name: Setup Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.14'
+      - name: Install requierments
+        run: pip install -r ./requirements.txt
 
-    - name: Install requierments
-      run: pip install -r ./requirements.txt
+      - name: Run Black
+        run: |
+          black --check digicheese/
 
+      - name: Run linters
+        run: |
+          flake8 digicheese/
 
-    - name: Run linters
-      run: flake8 digicheese/
-
-    - name: Run tests
-      run: pytest --maxfail=1 --disable-warnings digicheese/tests/
+      - name: Run tests
+        run: |
+          pytest --maxfail=1 --disable-warnings digicheese/tests/
