@@ -1,5 +1,7 @@
 """Repository package for database access layer."""
 
+# flake8: noqa
+
 from .r_utilisateur import UtilisateurRepository
 from .r_role import RoleRepository
 from .r_roles_utilisateur import RolesUtilisateurRepository

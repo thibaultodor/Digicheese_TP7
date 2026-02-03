@@ -1,5 +1,6 @@
 """Models package for Digicheese database entities."""
 
+# flake8: noqa
 from .adresse import Adresse
 from .boutique import Boutique
 from .client import Client
