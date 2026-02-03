@@ -1,3 +1,4 @@
+"""Client model for managing customer information."""
 from .. import db
 
 
@@ -14,6 +15,7 @@ class Client(db.Model):
     commandes = db.relationship("Commande", back_populates="client")
 
     def to_json(self):
+        """Convert client instance to JSON-serializable dictionary."""
         return {
             "id": self.id,
             "email_client": self.email_client,

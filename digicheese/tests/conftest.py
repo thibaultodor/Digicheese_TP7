@@ -1,17 +1,19 @@
+"""Pytest configuration and fixtures for Digicheese tests."""
 import pytest
 
+from .. import create_app
+from .. import db
 from digicheese.enums.role_enum import RoleEnum
 from digicheese.models.role import Role
 from digicheese.models.roles_utilisateur import RolesUtilisateur
-from .. import create_app
-from .. import db
 from digicheese.models import Utilisateur as User
 
 
 @pytest.fixture
 def app():
-    app = create_app()
-    with app.app_context():
+    """Create and configure a test Flask application."""
+    test_app = create_app()
+    with test_app.app_context():
         db.create_all()
 
         admin = User(name="admin", email="admin@test.com")
@@ -35,7 +37,7 @@ def app():
 
         db.session.commit()
 
-        yield app
+        yield test_app
 
         db.session.remove()
         db.drop_all()
@@ -43,11 +45,13 @@ def app():
 
 @pytest.fixture
 def client(app):
+    """Create a test client for the application."""
     return app.test_client()
 
 
 @pytest.fixture
 def authenticated_admin_client(client):
+    """Create a test client authenticated as admin."""
     with client:
         client.post(
             "/api-login",
@@ -59,7 +63,7 @@ def authenticated_admin_client(client):
 
 @pytest.fixture
 def authenticated_package_client(client):
-    """Client authenticated as a regular user"""
+    """Create a test client authenticated as a package/colis user."""
     with client:
         client.post(
             "/api-login",

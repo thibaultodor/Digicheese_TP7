@@ -1,3 +1,4 @@
+"""Colis routes for mailing operations."""
 from flask import Blueprint, jsonify
 from flask_login import login_required
 

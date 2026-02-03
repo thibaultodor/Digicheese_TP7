@@ -1,3 +1,4 @@
+"""Packaging model for managing packaging types."""
 from .. import db
 
 
@@ -15,6 +16,7 @@ class Conditionnement(db.Model):
     rel_conds = db.relationship("RelCond", back_populates="conditionnement")
 
     def to_json(self):
+        """Convert packaging instance to JSON-serializable dictionary."""
         return {
             "id": self.id,
             "libelle": self.libelle,

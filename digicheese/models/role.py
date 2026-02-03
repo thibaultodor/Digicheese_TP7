@@ -1,3 +1,4 @@
+"""Role model for managing user roles and permissions."""
 from .. import db
 
 
@@ -14,4 +15,5 @@ class Role(db.Model):
     )
 
     def to_json(self):
+        """Convert role instance to JSON-serializable dictionary."""
         return {"id": self.id, "libelle": self.libelle}

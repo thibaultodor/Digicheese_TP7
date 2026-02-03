@@ -1,3 +1,8 @@
+"""
+Digicheese application package.
+
+This module initializes the Flask application and configures extensions.
+"""
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
@@ -8,6 +13,12 @@ db = SQLAlchemy()
 
 
 def create_app():
+    """
+    Create and configure the Flask application.
+
+    Returns:
+        Flask: Configured Flask application instance.
+    """
     app = Flask(__name__)
     app.config["SECRET_KEY"] = "your-secret-key-change-in-production"
     app.config["SQLALCHEMY_DATABASE_URI"] = (

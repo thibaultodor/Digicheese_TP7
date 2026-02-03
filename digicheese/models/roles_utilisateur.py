@@ -1,8 +1,9 @@
+"""User-role association model for many-to-many relationships."""
 from .. import db
 
 
 class RolesUtilisateur(db.Model):
-    """Link table between User and Role (many-to-many).A user can have multiple roles."""
+    """Link table between User and Role (many-to-many). A user can have multiple roles."""
 
     __tablename__ = "roles_utilisateur"
 

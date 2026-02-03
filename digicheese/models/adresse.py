@@ -1,3 +1,4 @@
+"""Address model for managing customer addresses."""
 from .. import db
 
 
@@ -16,6 +17,7 @@ class Adresse(db.Model):
     clients = db.relationship("Client", back_populates="adresse")
 
     def to_json(self):
+        """Convert address instance to JSON-serializable dictionary."""
         return {
             "id": self.id,
             "comp_adresse1": self.comp_adresse1,

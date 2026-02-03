@@ -1,3 +1,4 @@
+"""Order detail model for managing items in orders."""
 from .. import db
 
 
@@ -17,6 +18,7 @@ class DetailCommande(db.Model):
     objet = db.relationship("Objet", back_populates="detail_commandes")
 
     def to_json(self):
+        """Convert order detail instance to JSON-serializable dictionary."""
         return {
             "id": self.id,
             "quantite": self.quantite,

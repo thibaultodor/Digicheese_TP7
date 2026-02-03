@@ -1,3 +1,4 @@
+"""Order model for managing customer orders."""
 from .. import db
 
 
@@ -25,6 +26,7 @@ class Commande(db.Model):
     )
 
     def to_json(self):
+        """Convert order instance to JSON-serializable dictionary."""
         return {
             "id": self.id,
             "date": self.date.isoformat() if self.date else None,

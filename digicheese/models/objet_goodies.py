@@ -1,3 +1,4 @@
+"""Object model for managing gift items and goodies."""
 from .. import db
 
 
@@ -24,6 +25,7 @@ class Objet(db.Model):
     rel_conds = db.relationship("RelCond", back_populates="objet")
 
     def to_json(self):
+        """Convert object instance to JSON-serializable dictionary."""
         return {
             "id": self.id,
             "libelle": self.libelle,

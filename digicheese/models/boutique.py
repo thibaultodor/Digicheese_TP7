@@ -1,8 +1,5 @@
+"""Boutique model for tracking separate dated quantities in boutique context."""
 from .. import db
-
-"""
-Boutique: separate dated quantity tracking for an object in boutique context.
-"""
 
 
 class Boutique(db.Model):
@@ -18,6 +15,7 @@ class Boutique(db.Model):
     objet = db.relationship("Objet", back_populates="boutiques")
 
     def to_json(self):
+        """Convert boutique instance to JSON-serializable dictionary."""
         return {
             "id": self.id,
             "date": self.date.isoformat() if self.date else None,

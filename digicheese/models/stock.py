@@ -1,8 +1,5 @@
+"""Stock model for managing stock locations and types."""
 from .. import db
-
-"""
-Stock: list of stock locations/types.
-"""
 
 
 class Stock(db.Model):
@@ -16,4 +13,5 @@ class Stock(db.Model):
     lignes = db.relationship("StockLigne", back_populates="stock")
 
     def to_json(self):
+        """Convert stock instance to JSON-serializable dictionary."""
         return {"id": self.id, "libelle": self.libelle}

@@ -1,3 +1,4 @@
+"""Repository package for database access layer."""
 from .r_utilisateur import UtilisateurRepository
 from .r_role import RoleRepository
 from .r_roles_utilisateur import RolesUtilisateurRepository

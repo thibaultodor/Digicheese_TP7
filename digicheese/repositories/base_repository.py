@@ -1,4 +1,9 @@
+"""Base repository class for database operations."""
+
+
 class BaseRepository:
+    """Base repository providing common CRUD operations."""
+
     model = None
 
     def __init__(self, model, session=None):
@@ -6,6 +11,7 @@ class BaseRepository:
         self.session = session
 
     def _commit(self):
+        """Commit changes to the database with rollback on error."""
         try:
             self.session.commit()
         except Exception:
@@ -13,12 +19,15 @@ class BaseRepository:
             raise
 
     def get_all(self):
+        """Get all records of the model."""
         return self.session.query(self.model).all()
 
     def get_by_id(self, id_):
+        """Get a record by its ID."""
         return self.session.get(self.model, id_)
 
     def add(self, obj=None, **kwargs):
+        """Add a new record to the database."""
         if obj is None:
             obj = self.model(**kwargs)
         self.session.add(obj)
@@ -26,6 +35,7 @@ class BaseRepository:
         return obj
 
     def update(self, id_, **kwargs):
+        """Update a record by its ID."""
         obj = self.get_by_id(id_)
         if obj is None:
             return None
@@ -38,6 +48,7 @@ class BaseRepository:
         return obj
 
     def delete(self, id_):
+        """Delete a record by its ID."""
         obj = self.get_by_id(id_)
         if obj is None:
             return False

@@ -1,3 +1,4 @@
+"""Price model for managing object prices."""
 from .. import db
 
 
@@ -15,6 +16,7 @@ class Prix(db.Model):
     objet = db.relationship("Objet", back_populates="prix")
 
     def to_json(self):
+        """Convert price instance to JSON-serializable dictionary."""
         return {
             "id": self.id,
             "prix_objet": float(self.prix_objet),

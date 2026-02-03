@@ -1,10 +1,11 @@
+"""Admin routes for user management."""
 from flask import Blueprint, jsonify, request
 from flask_login import login_required
+from werkzeug.security import generate_password_hash
 
 from digicheese.repositories.r_utilisateur import UtilisateurRepository
 from digicheese.decorator.role_required import role_required
 from digicheese import db
-from werkzeug.security import generate_password_hash
 
 admin_users = Blueprint("admin_users", __name__, url_prefix="/admin/users")
 repo = UtilisateurRepository(db.session)

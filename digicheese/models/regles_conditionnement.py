@@ -1,3 +1,4 @@
+"""Packaging rules model for managing object packaging configurations."""
 from .. import db
 
 
@@ -17,6 +18,7 @@ class RelCond(db.Model):
     conditionnement = db.relationship("Conditionnement", back_populates="rel_conds")
 
     def to_json(self):
+        """Convert packaging rule instance to JSON-serializable dictionary."""
         return {
             "id": self.id,
             "quantite_objet": self.quantite_objet,

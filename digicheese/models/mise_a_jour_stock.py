@@ -1,3 +1,4 @@
+"""Stock update model for tracking inventory changes."""
 from datetime import date
 from .. import db
 
@@ -15,6 +16,7 @@ class MiseAJour(db.Model):
     objet = db.relationship("Objet", back_populates="mises_a_jour")
 
     def to_json(self):
+        """Convert stock update instance to JSON-serializable dictionary."""
         return {
             "id": self.id,
             "quantite_maj": self.quantite_maj,
