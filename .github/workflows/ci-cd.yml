@@ -20,7 +20,7 @@ jobs:
 
       - name: Run Black
         run: |
-          black digicheese/
+          black -l=79 digicheese/
 
       - name: Run linters
         run: |
