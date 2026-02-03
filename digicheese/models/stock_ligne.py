@@ -4,8 +4,10 @@ from .. import db
 StockLigne: stock quantities for an object (optionally linked to a stock), with optional dates for history.
 """
 
+
 class StockLigne(db.Model):
     """Stock line (stock_ligne) linked to an object and (optionally) a stock."""
+
     __tablename__ = "stock_ligne"
 
     id = db.Column(db.Integer, primary_key=True)

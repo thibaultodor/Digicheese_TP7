@@ -1,7 +1,9 @@
 from .. import db
 
+
 class RolesUtilisateur(db.Model):
     """Link table between User and Role (many-to-many).A user can have multiple roles."""
+
     __tablename__ = "roles_utilisateur"
 
     user_id = db.Column(db.Integer, db.ForeignKey("utilisateur.id"), primary_key=True)

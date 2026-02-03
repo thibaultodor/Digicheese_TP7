@@ -1,6 +1,7 @@
 from digicheese.repositories.base_repository import BaseRepository
 from ..models import RolesUtilisateur
 
+
 class RolesUtilisateurRepository(BaseRepository):
     def __init__(self, session=None):
         super().__init__(RolesUtilisateur, session)

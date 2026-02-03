@@ -1,7 +1,9 @@
 from .. import db
 
+
 class Conditionnement(db.Model):
     """Packaging / conditionnement."""
+
     __tablename__ = "conditionnement"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -16,6 +18,8 @@ class Conditionnement(db.Model):
         return {
             "id": self.id,
             "libelle": self.libelle,
-            "poids_condit": float(self.poids_condit) if self.poids_condit is not None else None,
+            "poids_condit": (
+                float(self.poids_condit) if self.poids_condit is not None else None
+            ),
             "ordre_imp": self.ordre_imp,
         }

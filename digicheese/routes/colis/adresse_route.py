@@ -5,19 +5,14 @@ from digicheese import db
 from digicheese.decorator.role_required import role_required
 from digicheese.repositories import AdresseRepository
 
-colis_adresses = Blueprint(
-    'colis_adresses',
-    __name__,
-    url_prefix='/colis/adresses'
-)
+colis_adresses = Blueprint("colis_adresses", __name__, url_prefix="/colis/adresses")
 
 repo = AdresseRepository(db.session)
 
 
-
-@colis_adresses.route('/', methods=['GET'])
+@colis_adresses.route("/", methods=["GET"])
 @login_required
-@role_required('colis')
+@role_required("colis")
 def list_adresses():
     """
     Liste toutes les adresses
@@ -45,11 +40,9 @@ def list_adresses():
     return jsonify([a.to_json() for a in adresses]), 200
 
 
-
-
-@colis_adresses.route('/<int:adresse_id>', methods=['GET'])
+@colis_adresses.route("/<int:adresse_id>", methods=["GET"])
 @login_required
-@role_required('colis')
+@role_required("colis")
 def get_adresse(adresse_id):
     """
     Récupère une adresse par ID
@@ -84,10 +77,9 @@ def get_adresse(adresse_id):
     return jsonify(adresse.to_json()), 200
 
 
-
-@colis_adresses.route('/add', methods=['POST'])
+@colis_adresses.route("/add", methods=["POST"])
 @login_required
-@role_required('colis')
+@role_required("colis")
 def add_adresse():
     """
     Ajoute une adresse
@@ -124,10 +116,10 @@ def add_adresse():
     """
     data = request.get_json() or {}
 
-    comp_adresse1 = data.get('comp_adresse1')
-    comp_adresse2 = data.get('comp_adresse2', '')
-    comp_adresse3 = data.get('comp_adresse3', '')
-    commune_cp = data.get('commune_cp')
+    comp_adresse1 = data.get("comp_adresse1")
+    comp_adresse2 = data.get("comp_adresse2", "")
+    comp_adresse3 = data.get("comp_adresse3", "")
+    commune_cp = data.get("commune_cp")
 
     if not comp_adresse1 or not commune_cp:
         return jsonify({"error": "Champs manquants"}), 400
@@ -136,18 +128,15 @@ def add_adresse():
         comp_adresse1=comp_adresse1,
         comp_adresse2=comp_adresse2,
         comp_adresse3=comp_adresse3,
-        commune_cp=commune_cp
+        commune_cp=commune_cp,
     )
 
-    return jsonify({
-        "message": "Adresse créée",
-        "id": adresse.id
-    }), 201
+    return jsonify({"message": "Adresse créée", "id": adresse.id}), 201
 
 
-@colis_adresses.route('/update/<int:adresse_id>', methods=['PUT'])
+@colis_adresses.route("/update/<int:adresse_id>", methods=["PUT"])
 @login_required
-@role_required('colis')
+@role_required("colis")
 def update_adresse(adresse_id):
     """
     Met à jour une adresse
@@ -206,16 +195,12 @@ def update_adresse(adresse_id):
     if not adresse:
         return jsonify({"error": "Adresse non trouvée"}), 404
 
-    return jsonify({
-        "message": "Adresse mise à jour",
-        "id": adresse_id
-    }), 200
+    return jsonify({"message": "Adresse mise à jour", "id": adresse_id}), 200
 
 
-
-@colis_adresses.route('/delete/<int:adresse_id>', methods=['DELETE'])
+@colis_adresses.route("/delete/<int:adresse_id>", methods=["DELETE"])
 @login_required
-@role_required('colis')
+@role_required("colis")
 def delete_adresse(adresse_id):
     """
     Supprime une adresse
@@ -244,7 +229,4 @@ def delete_adresse(adresse_id):
         return jsonify({"error": "Adresse non trouvée"}), 404
 
     repo.delete(adresse_id)
-    return jsonify({
-        "message": f"Adresse {adresse_id} supprimée"
-    }), 200
-
+    return jsonify({"message": f"Adresse {adresse_id} supprimée"}), 200

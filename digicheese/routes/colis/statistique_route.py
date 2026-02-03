@@ -4,15 +4,13 @@ from flask_login import login_required
 from digicheese.decorator.role_required import role_required
 
 colis_statistique = Blueprint(
-    'colis_statistique',
-    __name__,
-    url_prefix='/colis/statistique'
+    "colis_statistique", __name__, url_prefix="/colis/statistique"
 )
 
 
-@colis_statistique.route('/statistique', methods=['GET'])
+@colis_statistique.route("/statistique", methods=["GET"])
 @login_required
-@role_required('colis')
+@role_required("colis")
 def get_statistiques():
     """
     Récupère un exemple de statistiques de colis
@@ -34,7 +32,7 @@ def get_statistiques():
         "total_colis": 120,
         "colis_livres": 85,
         "colis_en_attente": 35,
-        "pourcentage_livres": 70.8
+        "pourcentage_livres": 70.8,
     }
 
     return jsonify(stats_example), 200

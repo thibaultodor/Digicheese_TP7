@@ -5,19 +5,14 @@ from digicheese import db
 from digicheese.decorator.role_required import role_required
 from digicheese.repositories import CommandeRepository
 
-
-colis_commandes = Blueprint(
-    'colis_commandes',
-    __name__,
-    url_prefix='/colis/commandes'
-)
+colis_commandes = Blueprint("colis_commandes", __name__, url_prefix="/colis/commandes")
 
 repo = CommandeRepository(db.session)
 
 
-@colis_commandes.route('/', methods=['GET'])
+@colis_commandes.route("/", methods=["GET"])
 @login_required
-@role_required('colis')
+@role_required("colis")
 def list_commandes():
     """
     Liste toutes les commandes
@@ -41,9 +36,10 @@ def list_commandes():
     commandes = repo.get_all()
     return jsonify([c.to_json() for c in commandes]), 200
 
-@colis_commandes.route('/<int:commande_id>', methods=['GET'])
+
+@colis_commandes.route("/<int:commande_id>", methods=["GET"])
 @login_required
-@role_required('colis')
+@role_required("colis")
 def get_commande(commande_id):
     """
     Récupère une commande par ID
@@ -79,9 +75,10 @@ def get_commande(commande_id):
 
     return jsonify(commande.to_json()), 200
 
-@colis_commandes.route('/add', methods=['POST'])
+
+@colis_commandes.route("/add", methods=["POST"])
 @login_required
-@role_required('colis')
+@role_required("colis")
 def add_commande():
     """
     Ajoute une commande
@@ -128,19 +125,19 @@ def add_commande():
     """
     data = request.get_json() or {}
 
-    date = data.get('date')
-    timbre_client = data.get('timbre_client')
-    nb_colis = data.get('nb_colis')
-    b_archive = data.get('b_archive', False)
-    client_id = data.get('client_id')
-    conditionnement_id = data.get('conditionnement_id')
+    date = data.get("date")
+    timbre_client = data.get("timbre_client")
+    nb_colis = data.get("nb_colis")
+    b_archive = data.get("b_archive", False)
+    client_id = data.get("client_id")
+    conditionnement_id = data.get("conditionnement_id")
 
     if (
-        date is None or
-        timbre_client is None or
-        nb_colis is None or
-        client_id is None or
-        conditionnement_id is None
+        date is None
+        or timbre_client is None
+        or nb_colis is None
+        or client_id is None
+        or conditionnement_id is None
     ):
         return jsonify({"error": "Champs manquants"}), 400
 
@@ -150,19 +147,15 @@ def add_commande():
         nb_colis=nb_colis,
         b_archive=b_archive,
         client_id=client_id,
-        conditionnement_id=conditionnement_id
+        conditionnement_id=conditionnement_id,
     )
 
-    return jsonify({
-        "message": "Commande créée",
-        "id": commande.id
-    }), 201
+    return jsonify({"message": "Commande créée", "id": commande.id}), 201
 
 
-
-@colis_commandes.route('/update/<int:commande_id>', methods=['PUT'])
+@colis_commandes.route("/update/<int:commande_id>", methods=["PUT"])
 @login_required
-@role_required('colis')
+@role_required("colis")
 def update_commande(commande_id):
     """
     Met à jour une commande
@@ -217,7 +210,7 @@ def update_commande(commande_id):
         "nb_colis",
         "b_archive",
         "client_id",
-        "conditionnement_id"
+        "conditionnement_id",
     ):
         if field in data:
             update_data[field] = data[field]
@@ -229,15 +222,12 @@ def update_commande(commande_id):
     if not commande:
         return jsonify({"error": "Commande non trouvée"}), 404
 
-    return jsonify({
-        "message": "Commande mise à jour",
-        "id": commande_id
-    }), 200
+    return jsonify({"message": "Commande mise à jour", "id": commande_id}), 200
 
 
-@colis_commandes.route('/delete/<int:commande_id>', methods=['DELETE'])
+@colis_commandes.route("/delete/<int:commande_id>", methods=["DELETE"])
 @login_required
-@role_required('colis')
+@role_required("colis")
 def delete_commande(commande_id):
     """
     Supprime une commande
@@ -266,6 +256,4 @@ def delete_commande(commande_id):
         return jsonify({"error": "Commande non trouvée"}), 404
 
     repo.delete(commande_id)
-    return jsonify({
-        "message": f"Commande {commande_id} supprimée"
-    }), 200
+    return jsonify({"message": f"Commande {commande_id} supprimée"}), 200

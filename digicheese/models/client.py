@@ -1,7 +1,9 @@
 from .. import db
 
+
 class Client(db.Model):
     """Client (customer) linked to one address."""
+
     __tablename__ = "client"
 
     id = db.Column(db.Integer, primary_key=True)

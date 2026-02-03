@@ -9,15 +9,15 @@ class TestAuth:
     def test_authentication_json(self, client):
         with client:
             response = client.post(
-                "/api-login", 
-                headers={"Content-Type": "application/json"}, 
-                json={"email": "admin@test.com", "password": "admin123"}
+                "/api-login",
+                headers={"Content-Type": "application/json"},
+                json={"email": "admin@test.com", "password": "admin123"},
             )
         assert response.json.get("id") == 1
         assert response.json.get("name") == "admin"
         assert response.json.get("email") == "admin@test.com"
         assert response.status_code == 200
-    
+
     def test_page_needing_login(self, authenticated_admin_client):
         response = authenticated_admin_client.get("/profile")
         assert "Welcome, admin" in response.get_data(as_text=True)

@@ -7,16 +7,17 @@ from .. import create_app
 from .. import db
 from digicheese.models import Utilisateur as User
 
+
 @pytest.fixture
 def app():
     app = create_app()
     with app.app_context():
         db.create_all()
 
-        admin = User(name='admin', email='admin@test.com')
-        admin.set_password('admin123')
-        colis = User(name='colis', email='colis@test.com')
-        colis.set_password('colis123')
+        admin = User(name="admin", email="admin@test.com")
+        admin.set_password("admin123")
+        colis = User(name="colis", email="colis@test.com")
+        colis.set_password("colis123")
         db.session.add(admin)
         db.session.add(colis)
 
@@ -31,7 +32,7 @@ def app():
         role_utilisateur_colis = RolesUtilisateur(user=colis, role=role1)
         db.session.add(role_utilisateur_admin)
         db.session.add(role_utilisateur_colis)
-        
+
         db.session.commit()
 
         yield app
@@ -44,15 +45,17 @@ def app():
 def client(app):
     return app.test_client()
 
+
 @pytest.fixture
 def authenticated_admin_client(client):
     with client:
         client.post(
             "/api-login",
             headers={"Content-Type": "application/json"},
-            json={"email": "admin@test.com", "password": "admin123"}
+            json={"email": "admin@test.com", "password": "admin123"},
         )
         yield client
+
 
 @pytest.fixture
 def authenticated_package_client(client):
@@ -61,6 +64,6 @@ def authenticated_package_client(client):
         client.post(
             "/api-login",
             headers={"Content-Type": "application/json"},
-            json={"email": "colis@test.com", "password": "colis123"}
+            json={"email": "colis@test.com", "password": "colis123"},
         )
         yield client

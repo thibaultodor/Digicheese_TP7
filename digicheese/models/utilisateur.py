@@ -2,8 +2,10 @@ from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from .. import db
 
+
 class Utilisateur(db.Model, UserMixin):
     """Application user (utilisateur)."""
+
     __tablename__ = "utilisateur"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -11,7 +13,12 @@ class Utilisateur(db.Model, UserMixin):
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
 
-    role_links = db.relationship("RolesUtilisateur", back_populates="user", cascade="all, delete-orphan", lazy="joined",)
+    role_links = db.relationship(
+        "RolesUtilisateur",
+        back_populates="user",
+        cascade="all, delete-orphan",
+        lazy="joined",
+    )
 
     def set_password(self, raw_password: str) -> None:
         """Hash and store the password."""
@@ -24,7 +31,7 @@ class Utilisateur(db.Model, UserMixin):
     def has_role(self, role_label: str) -> bool:
         """Return True if the user has the given role label."""
         return any(link.role.libelle == role_label for link in self.role_links)
-    
+
     def __str__(self):
         return f"Utilisateur(id={self.id}, name={self.name}, email={self.email})"
 

@@ -1,7 +1,9 @@
 from .. import db
 
+
 class Objet(db.Model):
     """Gift item / goodie (objet)."""
+
     __tablename__ = "objet"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -10,8 +12,12 @@ class Objet(db.Model):
     poids = db.Column(db.Numeric(10, 3), nullable=True)
     bl_indispo = db.Column(db.Boolean, default=False)
 
-    prix = db.relationship("Prix", back_populates="objet", uselist=False, cascade="all, delete-orphan")
-    mises_a_jour = db.relationship("MiseAJour", back_populates="objet", cascade="all, delete-orphan")
+    prix = db.relationship(
+        "Prix", back_populates="objet", uselist=False, cascade="all, delete-orphan"
+    )
+    mises_a_jour = db.relationship(
+        "MiseAJour", back_populates="objet", cascade="all, delete-orphan"
+    )
     detail_commandes = db.relationship("DetailCommande", back_populates="objet")
     stock_lignes = db.relationship("StockLigne", back_populates="objet")
     boutiques = db.relationship("Boutique", back_populates="objet")

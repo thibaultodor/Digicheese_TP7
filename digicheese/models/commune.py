@@ -1,7 +1,9 @@
 from .. import db
 
+
 class Commune(db.Model):
     """Commune referential (postal code, city, department)."""
+
     __tablename__ = "commune"
 
     cp = db.Column(db.String(10), primary_key=True)

@@ -6,18 +6,15 @@ from digicheese.decorator.role_required import role_required
 from digicheese.repositories import DetailCommandeRepository
 
 colis_detail_commandes = Blueprint(
-    'colis_detail_commandes',
-    __name__,
-    url_prefix='/colis/detail_commandes'
+    "colis_detail_commandes", __name__, url_prefix="/colis/detail_commandes"
 )
 
 repo = DetailCommandeRepository(db.session)
 
 
-
-@colis_detail_commandes.route('/', methods=['GET'])
+@colis_detail_commandes.route("/", methods=["GET"])
 @login_required
-@role_required('colis')
+@role_required("colis")
 def list_detail_commandes():
     """
     Liste tous les détails de commandes
@@ -47,9 +44,9 @@ def list_detail_commandes():
     return jsonify([d.to_json() for d in details]), 200
 
 
-@colis_detail_commandes.route('/<int:detail_id>', methods=['GET'])
+@colis_detail_commandes.route("/<int:detail_id>", methods=["GET"])
 @login_required
-@role_required('colis')
+@role_required("colis")
 def get_detail_commande(detail_id):
     """
     Récupère un détail de commande par ID
@@ -85,9 +82,9 @@ def get_detail_commande(detail_id):
     return jsonify(detail.to_json()), 200
 
 
-@colis_detail_commandes.route('/add', methods=['POST'])
+@colis_detail_commandes.route("/add", methods=["POST"])
 @login_required
-@role_required('colis')
+@role_required("colis")
 def add_detail_commande():
     """
     Ajoute un détail de commande
@@ -129,11 +126,11 @@ def add_detail_commande():
     """
     data = request.get_json() or {}
 
-    quantite = data.get('quantite')
-    colis = data.get('colis')
-    commentaire = data.get('commentaire', '')
-    commande_id = data.get('commande_id')
-    objet_id = data.get('objet_id')
+    quantite = data.get("quantite")
+    colis = data.get("colis")
+    commentaire = data.get("commentaire", "")
+    commande_id = data.get("commande_id")
+    objet_id = data.get("objet_id")
 
     if quantite is None or colis is None or commande_id is None or objet_id is None:
         return jsonify({"error": "Champs manquants"}), 400
@@ -143,19 +140,15 @@ def add_detail_commande():
         colis=colis,
         commentaire=commentaire,
         commande_id=commande_id,
-        objet_id=objet_id
+        objet_id=objet_id,
     )
 
-    return jsonify({
-        "message": "Détail de commande créé",
-        "id": detail.id
-    }), 201
+    return jsonify({"message": "Détail de commande créé", "id": detail.id}), 201
 
 
-
-@colis_detail_commandes.route('/update/<int:detail_id>', methods=['PUT'])
+@colis_detail_commandes.route("/update/<int:detail_id>", methods=["PUT"])
 @login_required
-@role_required('colis')
+@role_required("colis")
 def update_detail_commande(detail_id):
     """
     Met à jour un détail de commande
@@ -212,17 +205,12 @@ def update_detail_commande(detail_id):
     if not detail:
         return jsonify({"error": "Détail de commande non trouvé"}), 404
 
-    return jsonify({
-        "message": "Détail de commande mis à jour",
-        "id": detail_id
-    }), 200
+    return jsonify({"message": "Détail de commande mis à jour", "id": detail_id}), 200
 
 
-
-
-@colis_detail_commandes.route('/delete/<int:detail_id>', methods=['DELETE'])
+@colis_detail_commandes.route("/delete/<int:detail_id>", methods=["DELETE"])
 @login_required
-@role_required('colis')
+@role_required("colis")
 def delete_detail_commande(detail_id):
     """
     Supprime un détail de commande
@@ -251,6 +239,4 @@ def delete_detail_commande(detail_id):
         return jsonify({"error": "Détail de commande non trouvé"}), 404
 
     repo.delete(detail_id)
-    return jsonify({
-        "message": f"Détail de commande {detail_id} supprimé"
-    }), 200
+    return jsonify({"message": f"Détail de commande {detail_id} supprimé"}), 200

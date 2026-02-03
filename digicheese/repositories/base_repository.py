@@ -1,4 +1,4 @@
-class BaseRepository():
+class BaseRepository:
     model = None
 
     def __init__(self, model, session=None):

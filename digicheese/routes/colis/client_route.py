@@ -5,20 +5,14 @@ from digicheese import db
 from digicheese.decorator.role_required import role_required
 from digicheese.repositories import ClientRepository
 
-
-colis_clients = Blueprint(
-    'colis_clients',
-    __name__,
-    url_prefix='/colis/clients'
-)
+colis_clients = Blueprint("colis_clients", __name__, url_prefix="/colis/clients")
 
 repo = ClientRepository(db.session)
 
 
-
-@colis_clients.route('/', methods=['GET'])
+@colis_clients.route("/", methods=["GET"])
 @login_required
-@role_required('colis')
+@role_required("colis")
 def list_clients():
     """
     Liste tous les clients
@@ -42,9 +36,9 @@ def list_clients():
     return jsonify([c.to_json() for c in clients]), 200
 
 
-@colis_clients.route('/<int:client_id>', methods=['GET'])
+@colis_clients.route("/<int:client_id>", methods=["GET"])
 @login_required
-@role_required('colis')
+@role_required("colis")
 def get_client(client_id):
     """
     Récupère un client par ID
@@ -77,9 +71,9 @@ def get_client(client_id):
     return jsonify(client.to_json()), 200
 
 
-@colis_clients.route('/add', methods=['POST'])
+@colis_clients.route("/add", methods=["POST"])
 @login_required
-@role_required('colis')
+@role_required("colis")
 def add_client():
     """
     Ajoute un client
@@ -110,26 +104,20 @@ def add_client():
     """
     data = request.get_json() or {}
 
-    email_client = data.get('email_client')
-    adresse_id = data.get('adresse_id')
+    email_client = data.get("email_client")
+    adresse_id = data.get("adresse_id")
 
     if not email_client or not adresse_id:
         return jsonify({"error": "Champs manquants"}), 400
 
-    client = repo.add(
-        email_client=email_client,
-        adresse_id=adresse_id
-    )
+    client = repo.add(email_client=email_client, adresse_id=adresse_id)
 
-    return jsonify({
-        "message": "Client créé",
-        "id": client.id
-    }), 201
+    return jsonify({"message": "Client créé", "id": client.id}), 201
 
 
-@colis_clients.route('/update/<int:client_id>', methods=['PUT'])
+@colis_clients.route("/update/<int:client_id>", methods=["PUT"])
 @login_required
-@role_required('colis')
+@role_required("colis")
 def update_client(client_id):
     """
     Met à jour un client
@@ -185,16 +173,12 @@ def update_client(client_id):
     if not client:
         return jsonify({"error": "Client non trouvé"}), 404
 
-    return jsonify({
-        "message": "Client mis à jour",
-        "id": client_id
-    }), 200
+    return jsonify({"message": "Client mis à jour", "id": client_id}), 200
 
 
-
-@colis_clients.route('/delete/<int:client_id>', methods=['DELETE'])
+@colis_clients.route("/delete/<int:client_id>", methods=["DELETE"])
 @login_required
-@role_required('colis')
+@role_required("colis")
 def delete_client(client_id):
     """
     Supprime un client
@@ -223,6 +207,4 @@ def delete_client(client_id):
         return jsonify({"error": "Client non trouvé"}), 404
 
     repo.delete(client_id)
-    return jsonify({
-        "message": f"Client {client_id} supprimé"
-    }), 200
+    return jsonify({"message": f"Client {client_id} supprimé"}), 200

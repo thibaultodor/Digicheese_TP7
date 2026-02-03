@@ -11,5 +11,7 @@ def role_required(role):
             if not current_user.is_authenticated or not current_user.has_role(role):
                 return jsonify({"error": "Forbidden"}), 403
             return f(*args, **kwargs)
+
         return decorated_function
+
     return decorator

@@ -6,15 +6,13 @@ from digicheese.decorator.role_required import role_required
 from digicheese import db
 from werkzeug.security import generate_password_hash
 
-
-
-admin_users = Blueprint('admin_users',__name__,url_prefix='/admin/users')
+admin_users = Blueprint("admin_users", __name__, url_prefix="/admin/users")
 repo = UtilisateurRepository(db.session)
 
 
-@admin_users.route('/', methods=['GET'])
+@admin_users.route("/", methods=["GET"])
 @login_required
-@role_required('admin')
+@role_required("admin")
 def list_users():
     """
     Liste tous les utilisateurs
@@ -26,12 +24,12 @@ def list_users():
         description: Liste des utilisateurs
     """
     users = repo.get_all()
-    return jsonify([user.to_json() for user in users ]), 200
+    return jsonify([user.to_json() for user in users]), 200
 
 
-@admin_users.route('/<int:user_id>', methods=['GET'])
+@admin_users.route("/<int:user_id>", methods=["GET"])
 @login_required
-@role_required('admin')
+@role_required("admin")
 def get_user(user_id):
     """
     Récupère un utilisateur par ID
@@ -57,12 +55,13 @@ def get_user(user_id):
     """
     user = repo.get_by_id(user_id)
     if user:
-        return user.to_json(),200
+        return user.to_json(), 200
     return jsonify({"error": "Utilisateur non trouvé"}), 404
 
-@admin_users.route('/add', methods=['POST'])
+
+@admin_users.route("/add", methods=["POST"])
 @login_required
-@role_required('admin')
+@role_required("admin")
 def add_user():
     """
     Ajoute un utilisateur
@@ -96,23 +95,20 @@ def add_user():
         description: Données invalides
     """
     data = request.get_json()
-    email = data.get('email')
-    name = data.get('name')
-    password = data.get('password')
+    email = data.get("email")
+    name = data.get("name")
+    password = data.get("password")
     password = generate_password_hash(password)
     if not email or not name or not password:
         return jsonify({"error": "Champs manquants"}), 400
 
     user = repo.add(email=email, name=name, password=password)
-    return jsonify({
-        "message": "Utilisateur créé",
-        "id": user.id
-    }), 201
+    return jsonify({"message": "Utilisateur créé", "id": user.id}), 201
 
 
-@admin_users.route('/delete/<int:user_id>', methods=['DELETE'])
+@admin_users.route("/delete/<int:user_id>", methods=["DELETE"])
 @login_required
-@role_required('admin')
+@role_required("admin")
 def delete_user(user_id):
     """
     Supprime un utilisateur par ID
@@ -140,14 +136,12 @@ def delete_user(user_id):
         return jsonify({"error": "Utilisateur non trouvé"}), 404
 
     repo.delete(user_id)
-    return jsonify({
-        "message": "Utilisateur suprimé",
-        "id": user_id
-    }), 200
+    return jsonify({"message": "Utilisateur suprimé", "id": user_id}), 200
 
-@admin_users.route('/update/<int:user_id>', methods=['PUT'])
+
+@admin_users.route("/update/<int:user_id>", methods=["PUT"])
 @login_required
-@role_required('admin')
+@role_required("admin")
 def update_user(user_id):
     """
     Met un utilisateur à jour
@@ -200,8 +194,4 @@ def update_user(user_id):
     if user is None:
         return jsonify({"error": "Utilisateur introuvable"}), 404
 
-    return jsonify({
-        "message": "Utilisateur mis à jour",
-        "id": user_id
-    }), 200
-
+    return jsonify({"message": "Utilisateur mis à jour", "id": user_id}), 200

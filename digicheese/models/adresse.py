@@ -1,7 +1,9 @@
 from .. import db
 
+
 class Adresse(db.Model):
     """Address (3 address lines) linked to one commune."""
+
     __tablename__ = "adresse"
 
     id = db.Column(db.Integer, primary_key=True)

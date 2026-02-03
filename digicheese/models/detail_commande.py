@@ -1,7 +1,9 @@
 from .. import db
 
+
 class DetailCommande(db.Model):
     """Order detail (detail_commande)."""
+
     __tablename__ = "detail_commande"
 
     id = db.Column(db.Integer, primary_key=True)

@@ -1,8 +1,10 @@
 from datetime import date
 from .. import db
 
+
 class MiseAJour(db.Model):
     """Stock update (mise_a_jour) linked to an object."""
+
     __tablename__ = "mise_a_jour"
 
     id = db.Column(db.Integer, primary_key=True)

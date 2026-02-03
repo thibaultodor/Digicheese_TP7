@@ -4,8 +4,10 @@ from .. import db
 Boutique: separate dated quantity tracking for an object in boutique context.
 """
 
+
 class Boutique(db.Model):
     """Boutique tracking linked to an object."""
+
     __tablename__ = "boutique"
 
     id = db.Column(db.Integer, primary_key=True)

@@ -5,14 +5,16 @@ from digicheese import db
 from digicheese.decorator.role_required import role_required
 from digicheese.repositories import ConditionnementRepository
 
-admin_conditionnements = Blueprint('admin_conditionnements',__name__,url_prefix='/admin/conditionnements')
+admin_conditionnements = Blueprint(
+    "admin_conditionnements", __name__, url_prefix="/admin/conditionnements"
+)
 
 repo = ConditionnementRepository(db.session)
 
 
-@admin_conditionnements.route('/', methods=['GET'])
+@admin_conditionnements.route("/", methods=["GET"])
 @login_required
-@role_required('admin')
+@role_required("admin")
 def list_conditionnements():
     """
     Liste tous les conditionnements
@@ -38,10 +40,9 @@ def list_conditionnements():
     return jsonify([c.to_json() for c in conditionnements]), 200
 
 
-
-@admin_conditionnements.route('/<int:conditionnement_id>', methods=['GET'])
+@admin_conditionnements.route("/<int:conditionnement_id>", methods=["GET"])
 @login_required
-@role_required('admin')
+@role_required("admin")
 def get_conditionnement(conditionnement_id):
     """
     Récupère un conditionnement par ID
@@ -72,12 +73,12 @@ def get_conditionnement(conditionnement_id):
     if not conditionnement:
         return jsonify({"error": "Conditionnement non trouvé"}), 404
 
-    return jsonify(conditionnement.to_json()),200
+    return jsonify(conditionnement.to_json()), 200
 
 
-@admin_conditionnements.route('/add', methods=['POST'])
+@admin_conditionnements.route("/add", methods=["POST"])
 @login_required
-@role_required('admin')
+@role_required("admin")
 def add_conditionnement():
     """
     Ajoute un conditionnement
@@ -112,28 +113,23 @@ def add_conditionnement():
     """
     data = request.get_json() or {}
 
-    libelle = data.get('libelle')
-    poids_condit = data.get('poids_condit')
-    ordre_imp = data.get('ordre_imp')
+    libelle = data.get("libelle")
+    poids_condit = data.get("poids_condit")
+    ordre_imp = data.get("ordre_imp")
 
     if libelle is None or poids_condit is None or ordre_imp is None:
         return jsonify({"error": "Champs manquants"}), 400
 
     conditionnement = repo.add(
-        libelle=libelle,
-        poids_condit=poids_condit,
-        ordre_imp=ordre_imp
+        libelle=libelle, poids_condit=poids_condit, ordre_imp=ordre_imp
     )
 
-    return jsonify({
-        "message": "Conditionnement créé",
-        "id": conditionnement.id
-    }), 201
+    return jsonify({"message": "Conditionnement créé", "id": conditionnement.id}), 201
 
 
-@admin_conditionnements.route('/delete/<int:conditionnement_id>', methods=['DELETE'])
+@admin_conditionnements.route("/delete/<int:conditionnement_id>", methods=["DELETE"])
 @login_required
-@role_required('admin')
+@role_required("admin")
 def delete_conditionnement(conditionnement_id):
     """
     Supprime un conditionnement
@@ -162,15 +158,12 @@ def delete_conditionnement(conditionnement_id):
         return jsonify({"error": "Conditionnement non trouvé"}), 404
 
     repo.delete(conditionnement_id)
-    return jsonify({
-        "message": f"Conditionnement {conditionnement_id} supprimé"
-    }), 200
+    return jsonify({"message": f"Conditionnement {conditionnement_id} supprimé"}), 200
 
 
-
-@admin_conditionnements.route('/update/<int:conditionnement_id>', methods=['PUT'])
+@admin_conditionnements.route("/update/<int:conditionnement_id>", methods=["PUT"])
 @login_required
-@role_required('admin')
+@role_required("admin")
 def update_conditionnement(conditionnement_id):
     """
     Met à jour un conditionnement
@@ -230,7 +223,7 @@ def update_conditionnement(conditionnement_id):
     if not conditionnement:
         return jsonify({"error": "Conditionnement introuvable"}), 404
 
-    return jsonify({
-        "message": "Conditionnement mis à jour",
-        "id": conditionnement_id
-    }), 200
+    return (
+        jsonify({"message": "Conditionnement mis à jour", "id": conditionnement_id}),
+        200,
+    )

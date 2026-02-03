@@ -5,17 +5,14 @@ from digicheese import db
 from digicheese.decorator.role_required import role_required
 from digicheese.repositories import CommuneRepository
 
-admin_communes = Blueprint(
-    'admin_communes',
-    __name__,
-    url_prefix='/admin/communes'
-)
+admin_communes = Blueprint("admin_communes", __name__, url_prefix="/admin/communes")
 
 repo = CommuneRepository(db.session)
 
-@admin_communes.route('/', methods=['GET'])
+
+@admin_communes.route("/", methods=["GET"])
 @login_required
-@role_required('admin')
+@role_required("admin")
 def list_communes():
     """
     Liste toutes les communes
@@ -39,9 +36,9 @@ def list_communes():
     return jsonify([commune.to_json() for commune in communes]), 200
 
 
-@admin_communes.route('/<string:cp>', methods=['GET'])
+@admin_communes.route("/<string:cp>", methods=["GET"])
 @login_required
-@role_required('admin')
+@role_required("admin")
 def get_commune(cp):
     """
     Récupère une commune par code postal
@@ -74,9 +71,9 @@ def get_commune(cp):
     return commune.to_json(), 200
 
 
-@admin_communes.route('/add', methods=['POST'])
+@admin_communes.route("/add", methods=["POST"])
 @login_required
-@role_required('admin')
+@role_required("admin")
 def add_commune():
     """
     Ajoute une commune
@@ -116,28 +113,21 @@ def add_commune():
     """
     data = request.get_json() or {}
 
-    cp = data.get('cp')
-    commune_name = data.get('commune')
-    departement = data.get('departement')
+    cp = data.get("cp")
+    commune_name = data.get("commune")
+    departement = data.get("departement")
 
     if not cp or not commune_name or not departement:
         return jsonify({"error": "Champs manquants"}), 400
 
-    commune = repo.add(
-        cp=cp,
-        commune=commune_name,
-        departement=departement
-    )
+    commune = repo.add(cp=cp, commune=commune_name, departement=departement)
 
-    return jsonify({
-        "message": "Commune créée",
-        "cp": commune.cp
-    }), 201
+    return jsonify({"message": "Commune créée", "cp": commune.cp}), 201
 
 
-@admin_communes.route('/delete/<string:cp>', methods=['DELETE'])
+@admin_communes.route("/delete/<string:cp>", methods=["DELETE"])
 @login_required
-@role_required('admin')
+@role_required("admin")
 def delete_commune(cp):
     """
     Supprime une commune par code postal
@@ -166,14 +156,12 @@ def delete_commune(cp):
         return jsonify({"error": "Commune non trouvée"}), 404
 
     repo.delete(cp)
-    return jsonify({
-        "message": f"Commune {cp} supprimée"
-    }), 200
+    return jsonify({"message": f"Commune {cp} supprimée"}), 200
 
 
-@admin_communes.route('/update/<string:cp>', methods=['PUT'])
+@admin_communes.route("/update/<string:cp>", methods=["PUT"])
 @login_required
-@role_required('admin')
+@role_required("admin")
 def update_commune(cp):
     """
     Met à jour une commune (sans modifier le CP)
@@ -220,7 +208,4 @@ def update_commune(cp):
     if not commune:
         return jsonify({"error": "Commune introuvable"}), 404
 
-    return jsonify({
-        "message": "Commune mise à jour",
-        "cp": cp
-    }), 200
+    return jsonify({"message": "Commune mise à jour", "cp": cp}), 200

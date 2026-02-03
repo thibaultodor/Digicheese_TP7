@@ -3,16 +3,12 @@ from flask_login import login_required
 
 from digicheese.decorator.role_required import role_required
 
-colis_mailler = Blueprint(
-    'colis_mailler',
-    __name__,
-    url_prefix='/colis/mailler'
-)
+colis_mailler = Blueprint("colis_mailler", __name__, url_prefix="/colis/mailler")
 
 
-@colis_mailler.route('/template', methods=['GET'])
+@colis_mailler.route("/template", methods=["GET"])
 @login_required
-@role_required('colis')
+@role_required("colis")
 def get_mail_template():
     """
     Récupère un exemple de template de mail
@@ -44,7 +40,7 @@ def get_mail_template():
             "Adresse de livraison :\n"
             "{{ adresse }}\n\n"
             "Merci de votre confiance."
-        )
+        ),
     }
 
     return jsonify(template), 200

@@ -4,9 +4,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from ..models import Utilisateur as User
 from .. import db
 
-auth = Blueprint('auth', __name__)
+auth = Blueprint("auth", __name__)
 
-@auth.route('/login')
+
+@auth.route("/login")
 def login():
     """
     page login
@@ -17,9 +18,10 @@ def login():
       200:
         description: page login
     """
-    return render_template('login.html')
+    return render_template("login.html")
 
-@auth.route('/login', methods=['POST'])
+
+@auth.route("/login", methods=["POST"])
 def login_post():
     """
     login d'un compte
@@ -30,20 +32,21 @@ def login_post():
       200:
         description: login d'un compte
     """
-    email = request.form.get('email')
-    password = request.form.get('password')
-    remember = True if request.form.get('remember') else False
+    email = request.form.get("email")
+    password = request.form.get("password")
+    remember = True if request.form.get("remember") else False
 
     user = User.query.filter_by(email=email).first()
 
     if not user or not check_password_hash(user.password, password):
-        flash('Please check your login details and try again.')
-        return redirect(url_for('auth.login'))
+        flash("Please check your login details and try again.")
+        return redirect(url_for("auth.login"))
 
     login_user(user, remember=remember)
-    return redirect(url_for('main.profile'))
+    return redirect(url_for("main.profile"))
 
-@auth.route('/api-login', methods=['POST'])
+
+@auth.route("/api-login", methods=["POST"])
 def login_api_post():
     """
     Login via API
@@ -78,18 +81,19 @@ def login_api_post():
     """
 
     request_json = request.json
-    email = request_json.get('email')
-    password = request_json.get('password')
+    email = request_json.get("email")
+    password = request_json.get("password")
 
     user = User.query.filter_by(email=email).first()
     print(User.query.all())
     if not user or not check_password_hash(user.password, password):
-        return jsonify({'error': 'Invalid login details'}), 401
+        return jsonify({"error": "Invalid login details"}), 401
 
     login_user(user, remember=True)
     return jsonify(user.to_json()), 200
 
-@auth.route('/signup')
+
+@auth.route("/signup")
 def signup():
     """
     page création de compte
@@ -100,9 +104,10 @@ def signup():
       200:
         description: page création de compte
     """
-    return render_template('signup.html')
+    return render_template("signup.html")
 
-@auth.route('/signup', methods=['POST'])
+
+@auth.route("/signup", methods=["POST"])
 def signup_post():
     """
     création d'un compte utilisateur
@@ -113,23 +118,24 @@ def signup_post():
       200:
         description: création d'un compte utilisateur
     """
-    email = request.form.get('email')
-    name = request.form.get('name')
-    password = request.form.get('password')
+    email = request.form.get("email")
+    name = request.form.get("name")
+    password = request.form.get("password")
 
     user = User.query.filter_by(email=email).first()
 
     if user:
-        flash('Email address already exists')
-        return redirect(url_for('auth.signup'))
+        flash("Email address already exists")
+        return redirect(url_for("auth.signup"))
 
     new_user = User(email=email, name=name, password=generate_password_hash(password))
     db.session.add(new_user)
     db.session.commit()
 
-    return redirect(url_for('auth.login'))
+    return redirect(url_for("auth.login"))
 
-@auth.route('/logout')
+
+@auth.route("/logout")
 @login_required
 def logout():
     """
@@ -142,9 +148,10 @@ def logout():
         description: deconnexion
     """
     logout_user()
-    return redirect(url_for('main.index'))
+    return redirect(url_for("main.index"))
 
-@auth.route('/api-logout')
+
+@auth.route("/api-logout")
 @login_required
 def api_logout():
     """
@@ -157,4 +164,4 @@ def api_logout():
         description: deconnexion
     """
     logout_user()
-    return jsonify({'message': 'Logged out successfully'}), 200
+    return jsonify({"message": "Logged out successfully"}), 200

@@ -4,8 +4,10 @@ from .. import db
 Stock: list of stock locations/types.
 """
 
+
 class Stock(db.Model):
     """Stock entity (stock)."""
+
     __tablename__ = "stock"
 
     id = db.Column(db.Integer, primary_key=True)

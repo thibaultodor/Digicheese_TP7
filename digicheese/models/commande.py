@@ -1,7 +1,9 @@
 from .. import db
 
+
 class Commande(db.Model):
     """Order (commande) made by a client."""
+
     __tablename__ = "commande"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -12,11 +14,15 @@ class Commande(db.Model):
     nb_colis = db.Column(db.Integer, nullable=True)
     b_archive = db.Column(db.Boolean, default=False)
     client_id = db.Column(db.Integer, db.ForeignKey("client.id"), nullable=False)
-    conditionnement_id = db.Column(db.Integer, db.ForeignKey("conditionnement.id"), nullable=False)
+    conditionnement_id = db.Column(
+        db.Integer, db.ForeignKey("conditionnement.id"), nullable=False
+    )
 
     client = db.relationship("Client", back_populates="commandes")
     conditionnement = db.relationship("Conditionnement", back_populates="commandes")
-    details = db.relationship("DetailCommande", back_populates="commande", cascade="all, delete-orphan")
+    details = db.relationship(
+        "DetailCommande", back_populates="commande", cascade="all, delete-orphan"
+    )
 
     def to_json(self):
         return {

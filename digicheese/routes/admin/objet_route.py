@@ -5,12 +5,13 @@ from digicheese.decorator.role_required import role_required
 from digicheese.repositories import ObjetRepository
 from digicheese import db
 
-admin_objets = Blueprint('admin_objets', __name__, url_prefix='/admin/objets')
+admin_objets = Blueprint("admin_objets", __name__, url_prefix="/admin/objets")
 repo = ObjetRepository(db.session)
 
-@admin_objets.route('/', methods=['GET'])
+
+@admin_objets.route("/", methods=["GET"])
 @login_required
-@role_required('admin')
+@role_required("admin")
 def list_objets():
     """
     Liste tous les objets
@@ -38,9 +39,9 @@ def list_objets():
     return jsonify([o.to_json() for o in objets]), 200
 
 
-@admin_objets.route('/<int:objet_id>', methods=['GET'])
+@admin_objets.route("/<int:objet_id>", methods=["GET"])
 @login_required
-@role_required('admin')
+@role_required("admin")
 def get_objet(objet_id):
     """
     Récupère un objet par ID
@@ -73,9 +74,9 @@ def get_objet(objet_id):
     return objet.to_json(), 200
 
 
-@admin_objets.route('/add', methods=['POST'])
+@admin_objets.route("/add", methods=["POST"])
 @login_required
-@role_required('admin')
+@role_required("admin")
 def add_objet():
     """
     Ajoute un objet
@@ -118,25 +119,22 @@ def add_objet():
     """
     data = request.get_json() or {}
 
-    libelle = data.get('libelle')
-    taille = data.get('taille')
-    poids = data.get('poids')
-    bl_indispo = data.get('bl_indispo', False)
+    libelle = data.get("libelle")
+    taille = data.get("taille")
+    poids = data.get("poids")
+    bl_indispo = data.get("bl_indispo", False)
 
     if not libelle or not taille or poids is None:
         return jsonify({"error": "Champs manquants"}), 400
 
     objet = repo.add(libelle=libelle, taille=taille, poids=poids, bl_indispo=bl_indispo)
 
-    return jsonify({
-        "message": "Objet créé",
-        "id": objet.id
-    }), 201
+    return jsonify({"message": "Objet créé", "id": objet.id}), 201
 
 
-@admin_objets.route('/delete/<int:objet_id>', methods=['DELETE'])
+@admin_objets.route("/delete/<int:objet_id>", methods=["DELETE"])
 @login_required
-@role_required('admin')
+@role_required("admin")
 def delete_objet(objet_id):
     """
     Supprime un objet par ID
@@ -164,14 +162,12 @@ def delete_objet(objet_id):
         return jsonify({"error": "Objet non trouvé"}), 404
 
     repo.delete(objet_id)
-    return jsonify({
-        "message": f"Objet {objet_id} supprimé"
-    }), 200
+    return jsonify({"message": f"Objet {objet_id} supprimé"}), 200
 
 
-@admin_objets.route('/update/<int:objet_id>', methods=['PUT'])
+@admin_objets.route("/update/<int:objet_id>", methods=["PUT"])
 @login_required
-@role_required('admin')
+@role_required("admin")
 def update_objet(objet_id):
     """
     Met un objet à jour
@@ -229,7 +225,4 @@ def update_objet(objet_id):
     if not objet:
         return jsonify({"error": "Objet introuvable"}), 404
 
-    return jsonify({
-        "message": "Objet mis à jour",
-        "id": objet_id
-    }), 200
+    return jsonify({"message": "Objet mis à jour", "id": objet_id}), 200

@@ -1,1 +1,1 @@
-from .user_route import  admin_users
+from .user_route import admin_users
