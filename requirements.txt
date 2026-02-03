@@ -1,5 +1,4 @@
 aniso8601==10.0.1
-astroid==4.0.3
 asttokens==3.0.1
 attrs==25.4.0
 black==26.1.0
